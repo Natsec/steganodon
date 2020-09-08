@@ -20,6 +20,9 @@ Liste des moyens nécéssaires:
 ### Intro à l'IA
 - https://medium.com/@randylaosat/a-beginners-guide-to-machine-learning-dfadc19f6caf
 
+### Vidéos
+- intro détaillé aux réseaux de neurones : https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi
+
 ### Outils en ligne
 
 - voir les bits de l'image : https://incoherency.co.uk/image-steganography/#unhide
