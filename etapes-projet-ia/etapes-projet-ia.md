@@ -132,7 +132,7 @@ On peut se représenter le réseau de neurones artificiels comme une boîte avec
 - une **sortie** : le résultat attendu (le prénom du sujet présent sur la photo), et
 - entre les deux : un **réseau neuronal,** autrement dit des couches successives de neurones artificiels.
 
-**![une entrée : les données fournies (une photo) ; une sortie : le résultat attendu (le prénom du sujet sur la photo) ;  et entre les deux : des couches successives de neurones artificiels.](C:\Users\Kamil\Desktop\7--ENSIBS\Projet cyber\etapes_projet_ia.assets\1580323316174_0775_static-graphics-08.jpg)**
+**![une entrée : les données fournies (une photo) ; une sortie : le résultat attendu (le prénom du sujet sur la photo) ;  et entre les deux : des couches successives de neurones artificiels.](C:\Users\Kamil\Desktop\7--ENSIBS\Projet cyber\etape-_proje-_ia.assets\1580323316174_0775_static-graphics-08.jpg)**
 
 > Alors, apprentissage **supervisé** ou **non supervisé,** ici ?
 
@@ -164,7 +164,7 @@ Ces trois types de couche nous donnent schématiquement quelque chose comme ça 
 
 
 
-![Une version simplifiée d’un réseau de neurones.](etapes_projet_ia.assets/15803234534351_0775_static-graphics-09.jpg)
+![Une version simplifiée d’un réseau de neurones.](etapes-projet-ia.assets/15803234534351_0775_static-graphics-09.jpg)
 
 Pour apprendre, l’algorithme doit **s’entraîner,** en prenant chaque photo et en la faisant passer par ses différentes couches de neurones jusqu’à obtenir un résultat. Au début, il va répondre au hasard, car il n’a aucune expérience !
 
@@ -184,7 +184,7 @@ La **convolution** n’est rien d’autre qu’un **filtrage** de notre image. P
 
 Ainsi, nous allons nous déplacer progressivement sur les différentes zones de l’image, en effectuant ce qu’on appelle des **pas.**
 
-![On a une fenetre de filtre qui se déplace sur l'image pour l'analyser morceau par morceau et repérer plusieurs visages](etapes_projet_ia.assets/15803238862043_0775_static-graphics-13.jpg)
+![On a une fenetre de filtre qui se déplace sur l'image pour l'analyser morceau par morceau et repérer plusieurs visages](etapes-projet-ia.assets/15803238862043_0775_static-graphics-13.jpg)
 
 ### Le Deep Learning : réseau de neurones artificiels et convolution
 
