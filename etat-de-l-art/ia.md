@@ -40,3 +40,24 @@ Pendant la phase d'apprentissage, le programme utilise des données existantes, 
 3. En essai/erreur : l'algorithme ne prédit pas, il réessaye. 
 
 # Deep Learning
+
+* sous-discipline du Machine Learning ;
+* apprentissage profond ; 
+
+Construction de systèmes inspirés de nos cerveaux, comportant des **réseaux de neurones artificiels**.
+
+Principe de **convolution**, qui permet d'analyser une image pas à pas avec une fenêtre de filtre et donc d'être plus performant.
+
+## Réseaux de neurones artificiels
+
+Rpz par une boîte noire : 
+
+1. une entrée : data fournie ;
+2. un réseau neuronal : couches successives de neurones artificiels ; on parle de couches intermédiaires en interactions avec des opérations mathématiques ; neurons activés ou non (fonction d'activation) ;
+3. une sortie : résultat attendu ;
+
+## Convolution
+
+Réponse au problème de sensiblité extrême des réseaux : un petit changement de la donnée entraîne un boulversement interne et donc des perfs médiocres.
+
+La convolution n’est rien d’autre qu’un filtrage d'une image. Plutôt que de traiter l'image en un bloc, nous allons la diviser en différents carrés que nous allons analyser séparément.
