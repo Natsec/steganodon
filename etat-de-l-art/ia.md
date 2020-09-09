@@ -1,5 +1,9 @@
 # Machine Learning
 
+* sous-discipline de l'IA ; 
+* apprentissage automatique ;
+* repose sur un **modèle** : représensation d'un modèle donné ;
+
 Un **modèle** est une représentation mathématique qui permet de modéliser des règles par rapport aux données. 
 
 La modélisation des données se compose de deux phases : l'**apprentissage** et la **prédiction**. 
