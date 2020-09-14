@@ -39,6 +39,12 @@ Cette technique permet de cacher un message dans une image. pour cette technique
 ## F5
 Cet algorithme permet de cacher des données dans des images JPEG. Cet algorithme cache l'information au moment de la compression. Elle est plus longue à implémenter que le LSB.
 
+## NSF5
+Il a été créé pour corriger les faiblesses de l’algorithme F5. 
+
+## MOD
+L’algorithme MOD proposé par étend la proposition d'algorothme HUGO en définissant un coût de détectabilitéρi paramétré par un nombre élevé de paramètres.
+
 ## Echo Hiding
 La technique de l’Echo Hiding consiste à encoder l’information en introduisant un courtécho dans le signal audio. En dessous d’un délai d’une milliseconde,l’écho n’est pas perceptible par l’oreille humaine. L’inconvénient de cette méthode est sa faible capacité due à lamilliseconde d’écart nécessaire pour conserver sa transparence, ce qui explique le nombre limité de travaux surles applications de cette technique.
 
@@ -47,6 +53,9 @@ La technique des intervalles de silence encode de l’information en supprimant 
 
 ## Tone Insertion
 La technique de l’insertion de tonalité utilise la propriété du système auditif humainqui fait que sur deux sons avec deux puissances différentes, nous percevons celui ayant la plus grande. Cette technique a l’avantage de résister à l’application d’un filtre passe-bas et à l’ajout de bruit. Cependant, latechnique offre une petite capacité et est facilement détectée par un ordinateur.
+
+## HUGO
+Est une méthode de stéganographie d'image bien connue proposée ces dernières années. Il a joué un rôle prépondérant dans les algorithmes de dissimulation adaptatifs actuels. 
 
 ## Ajustement DC
 Cet algorithme [Saejung et al., 2013] traite seulement les images de format JPEG où l'image RGB est convertie en YCbCr. La dissimulation des données n’est réalisée que dans le plan Y qui contient l’essentiel de l’information.  Cet  algorithme  possède  comme  entrée  le  message secret et l'image porteuse, et comme sortie l'image dite stégo.
