@@ -11,10 +11,10 @@ Voici les différents applications dans le domaine de la stéganographie :
 
 ## Propriétés d'une technique de stéganographie
 ### La capacité
-Cette propriété représente laquantité d’informationqui peutêtre dissimulée. Le fichier porteur dispose d’une quantité limitée d’espace pour stocker ses propres informations.
+Cette propriété représente la quantité d’information qui peut être dissimulée. Le fichier porteur dispose d’une quantité limitée d’espace pour stocker ses propres informations.
 
 ### Résistance à la détection
-Plus une technique a la propriété d’être transparente,plus il est difficile de détecter que le fichier contient une information.
+Plus une technique a la propriété d’être transparente, plus il est difficile de détecter que le fichier contient une information.
 
 ### Résistance à la destruction
 Une technique robuste permet de résister aux traitements du signal qui pourraient altérer le fichier porteur et détruire le message.
@@ -48,20 +48,14 @@ L’algorithme MOD proposé par étend la proposition d'algorothme HUGO en défi
 ## Echo Hiding
 La technique de l’Echo Hiding consiste à encoder l’information en introduisant un courtécho dans le signal audio. En dessous d’un délai d’une milliseconde,l’écho n’est pas perceptible par l’oreille humaine. L’inconvénient de cette méthode est sa faible capacité due à lamilliseconde d’écart nécessaire pour conserver sa transparence, ce qui explique le nombre limité de travaux surles applications de cette technique.
 
-## Silence Intervals
-La technique des intervalles de silence encode de l’information en supprimant leséchantillons qui représentent un silence. Elle est donc plus efficace quand elle est utilisée sur de la parole.
-
-## Tone Insertion
-La technique de l’insertion de tonalité utilise la propriété du système auditif humainqui fait que sur deux sons avec deux puissances différentes, nous percevons celui ayant la plus grande. Cette technique a l’avantage de résister à l’application d’un filtre passe-bas et à l’ajout de bruit. Cependant, latechnique offre une petite capacité et est facilement détectée par un ordinateur.
-
 ## HUGO
 Est une méthode de stéganographie d'image bien connue proposée ces dernières années. Il a joué un rôle prépondérant dans les algorithmes de dissimulation adaptatifs actuels. 
 
 ## Ajustement DC
-Cet algorithme [Saejung et al., 2013] traite seulement les images de format JPEG où l'image RGB est convertie en YCbCr. La dissimulation des données n’est réalisée que dans le plan Y qui contient l’essentiel de l’information.  Cet  algorithme  possède  comme  entrée  le  message secret et l'image porteuse, et comme sortie l'image dite stégo.
+Cet algorithme traite seulement les images de format JPEG où l'image RGB est convertie en YCbCr. La dissimulation des données n’est réalisée que dans le plan Y qui contient l’essentiel de l’information.  Cet  algorithme  possède  comme  entrée  le  message secret et l'image porteuse, et comme sortie l'image dite stégo.
 
 ## DWT-LSB 
-Cet  algorithme  introduit  par  [Saejung  et  al.,  2013]  possède  de  manière  naturelle  en  entrée l'image porteuse et l'image secrète, et en sortie l'image stégo. Il cache un seul bit du message secret dans le LSB d'un coefficient DWT en se basant sur un certain seuil. 
+Cet  algorithme  introduit   par possède  de  manière  naturelle  en  entrée l'image porteuse et l'image secrète, et en sortie l'image stégo. Il cache un seul bit du message secret dans le LSB d'un coefficient DWT en se basant sur un certain seuil. 
 
 ## DWT Alpha- Fusion 
 Cet  algorithme  fut  introduit  dans  [Boora  et  Gambhir,  2013].  Le  principe  est  de  crypter l'image secrète via la carte d’Arnold, puis d’effectuer une transformée DWT à la fois sur l'image cryptée et sur l'image porteuse. Les deux transformées sont ensuite fusionnées (selon le modèle donné par l’eq. 3.1) . En final, on applique une transformée inverse (IDWT) pour obtenir  l'image  stégo.  Dans  cet  algorithme,  Les  deux  images,  secrète  et  porteuse  sont  de même  taille.  Le  cryptage  et  le  fusionnement  donnent  à  ce  type  de  stéganographie  un  bon niveau de sécurité. 
