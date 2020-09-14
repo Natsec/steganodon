@@ -30,3 +30,6 @@ Liste des moyens nécéssaires:
 - https://stegonline.georgeom.net/image
 - https://aperisolve.fr/
 - https://github.com/SST-CTF/lsb-steganography
+
+### Outils à installer
+- Liste d'outils : https://k-lfa.info/tools-stegano/
