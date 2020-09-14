@@ -22,6 +22,7 @@ Liste des moyens nécéssaires:
 
 ### Vidéos
 - intro détaillé aux réseaux de neurones : https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi
+- cour du MIT sur le deep learning : https://youtu.be/njKP3FqW3Sk
 
 ### Outils en ligne
 
