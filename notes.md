@@ -24,7 +24,7 @@
 
 ### Vidéos
 - intro détaillé aux réseaux de neurones : https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi
-- cour du MIT sur le deep learning : https://youtu.be/njKP3FqW3Sk
+- cours du MIT sur le deep learning : https://www.youtube.com/playlist?list=PLtBw6njQRU-rwp5__7C0oIVt26ZgjG9NI
 
 ### Outils en ligne
 
