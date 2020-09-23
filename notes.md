@@ -4,8 +4,10 @@
 
 *
 
-Liste des moyens nécéssaires:
-- ?
+- Schéma architecture (fonctions, informations, biens supports, acteurs)
+- Scenario opérationnel (cas d'utilisation)
+- Générer un premier jeu de données
+- Analyser les images
 
 ## Liens utiles
 
