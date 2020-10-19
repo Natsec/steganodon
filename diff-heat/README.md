@@ -1,20 +1,21 @@
 # Diff-Heat
 Visualizing differences between two RGB images.
 
-The script is tested with JPG and PNG, but should work with any image type supported by matplotlib.
-
-The script takes can take one or two arguments.
+The script is tested with JPG and PNG format, but it should work with any image type supported by matplotlib.
 
 ## Usage
-To show the difference between two pictures
-```
-./diff-heat.py image1.jpg image2.jpg
-```
 
-To show the difference between two pictures
+To show a picture :
 ```
-./diff-heat.py image1.jpg
+./diff-heat.py parrot.jpg
 ```
+![](./Figure_1.png)
+
+To show the differences between two pictures :
+```
+./diff-heat.py parrot.jpg parrot_paint.jpg
+```
+![](./Figure_2.png)
 
 ## TODO
 - bug affichage full color
