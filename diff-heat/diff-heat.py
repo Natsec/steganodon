@@ -5,40 +5,42 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as img
 
-"""
-TODO: trois images dans une fenêtre
 
-"""
-
+# ouverture des images
 image1 = img.imread(sys.argv[1])
-# image2 = img.imread(sys.argv[2])
+image2 = img.imread(sys.argv[2])
 
-channel = ["Red", "Green", "Blue", ""]
-# for i in range(3):
-# 	plt.figure("Channel {} : {}".format(i, channel[i]))
-# 	plt.imshow(image1[:, :, i])
-# 	plt.colorbar()
+# transformation en matrice
+image1 = np.array(image1*255).astype(np.uint8)
+image2 = np.array(image2*255).astype(np.uint8)
+
+# calcul des differences
+image_to_show = np.bitwise_xor(image1, image2)
+
+channel = ["Red", "Green", "Blue", "Alpha"]
+height, width, chan = np.shape(image_to_show)
+
+# paramétrage en fonction du format de l'image (JPG ou PNG)
+if chan == 3:
+    rows, cols = 2, 2
+elif chan == 4:
+    rows, cols = 2, 3
 
 
-plt.show()
-
-rows, cols = 2, 2
-axes=[0]
-fig=plt.figure()
-
-for i in range(rows * cols):
+axe = [None, None, None, None, None]
+fig = plt.figure()
+for i in range(chan+1):
     # rand_img = np.random.randint(255, size=(200, 200))
-    axes.append(fig.add_subplot(rows, cols, i+1))
-    if i < 3:
+    axe[i] = plt.subplot(rows, cols, i+1, sharex=axe[0], sharey=axe[0])
+    if i < chan:
         subplot_title = "Channel {} : {}".format(i, channel[i])
-        axes[-1].set_title(subplot_title)
-        plt.imshow(image1[:, :, i])
+        plt.imshow(image_to_show[:, :, i])
     else:
-        plt.imshow(image1)
+        subplot_title = "Full Color"
+        plt.imshow(image_to_show)
 
+    axe[i].set_title(subplot_title)
     plt.colorbar()
-    axes[-1].sharex(axes[-1])
-    axes[-1].sharey(axes[-1])
 
 fig.tight_layout()
 plt.show()
