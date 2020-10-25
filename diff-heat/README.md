@@ -18,5 +18,5 @@ To show the differences between two pictures :
 ![](./Figure_2.png)
 
 ## TODO
-- bug affichage full color
-- afficher image si que 1 argument
+- couleurs inversées quand affiche 1 image jpg
+- pas d'affichage en full color quand diff 2 images png

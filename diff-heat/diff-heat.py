@@ -6,16 +6,19 @@ import matplotlib.pyplot as plt
 import matplotlib.image as img
 
 
-# ouverture des images
+# ouverture de la première image
 image1 = img.imread(sys.argv[1])
-image2 = img.imread(sys.argv[2])
-
-# transformation en matrice
 image1 = np.array(image1*255).astype(np.uint8)
-image2 = np.array(image2*255).astype(np.uint8)
 
-# calcul des differences
-image_to_show = np.bitwise_xor(image1, image2)
+# si deux images sont données en paramètre
+if len(sys.argv) > 2:
+    image2 = img.imread(sys.argv[2])
+    image2 = np.array(image2*255).astype(np.uint8)
+
+    # calcul des differences
+    image_to_show = np.bitwise_xor(image1, image2)
+else:
+    image_to_show = image1
 
 channel = ["Red", "Green", "Blue", "Alpha"]
 height, width, chan = np.shape(image_to_show)
