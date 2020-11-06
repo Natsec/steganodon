@@ -4,11 +4,19 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as img
+from scipy import stats
 
 
 # ouverture de la première image
 image1 = img.imread(sys.argv[1])
 image1 = np.array(image1*255).astype(np.uint8)
+
+# affichage des stats de la première image
+print("Mean :                {}".format(np.mean(image1.flatten())))
+print("Median :              {}".format(np.median(image1.flatten())))
+print("Mode :                {}".format(stats.mode(image1.flatten())))
+print("Standard deviation o: {}".format(np.std(image1.flatten())))
+print("Variance o²:          {}".format(np.var(image1.flatten())))
 
 # si deux images sont données en paramètre
 if len(sys.argv) > 2:
