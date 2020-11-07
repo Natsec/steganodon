@@ -1,0 +1,21 @@
+- name: Fichier bash_aliases
+  copy:
+    src: bash_aliases
+    dest: /root/.bash_aliases
+
+- name: Inclusion dans .bashrc
+  blockinfile:
+    path: /root/.bashrc
+    marker: "# {mark} bash_aliases"
+    block: |
+      if [ -f ~/.bash_aliases ]; then
+        . ~/.bash_aliases
+      fi
+
+- name: Prompt
+  blockinfile:
+    path: /root/.bashrc
+    marker: "# {mark} prompt"
+    block: |
+      export {{ prompt.retro }}
+      export LS_COLORS="ow=01;36;40"

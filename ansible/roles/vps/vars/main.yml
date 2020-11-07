@@ -1,0 +1,16 @@
+# Base
+########################################
+
+mdp:
+  # mkpasswd -m sha512crypt -R 200000
+  root: mettre hash
+
+pubkeys:
+  - mettre clés publique
+  - mettre clés publique
+
+# Custom
+########################################
+prompt:
+  rouge: 'PS1="\[$(tput setaf 1)\]\u@\h: \W \\$ \[$(tput sgr0)\]"'
+  retro: 'PS1="\[$(tput setaf 5)\]\u\[$(tput setaf 4)\]@\[$(tput setaf 5)\]\h\[$(tput setaf 4)\]: \W \\$ \[$(tput sgr0)\]"'

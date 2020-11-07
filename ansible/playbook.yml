@@ -1,0 +1,6 @@
+- name: Configuration du serveur de calcul
+  hosts: serveur
+  # become: yes
+
+  roles:
+    - deeplearning

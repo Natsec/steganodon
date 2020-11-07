@@ -1,0 +1,18 @@
+- name: Installation des paquets
+  package:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - nftables
+    - fail2ban
+
+- name: Lancement au démarrage
+  systemd:
+    name: nftables
+    enabled: yes
+
+- name: Règles de filtrage
+  copy:
+    src: nftables.conf
+    dest: /etc/nftables.conf
+  notify: restart nftables

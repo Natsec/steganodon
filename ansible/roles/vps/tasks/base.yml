@@ -1,0 +1,25 @@
+# - name: Hostname
+#   hostname:
+#     name: steganodon
+
+# - name: Mot de passe root
+#   user:
+#     name: root
+#     password: "{{ mdp.root }}"
+
+- name: Installation des paquets
+  package:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - man
+    - htop
+    - tree
+    - ncat
+    - tightvncserver
+
+- name: Cron
+  copy:
+    src: cron
+    dest: /var/spool/cron/crontabs/root
+    mode: 0600
