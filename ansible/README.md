@@ -28,6 +28,6 @@ ansible-playbook playbook.yml
 ```
 
 On peut lancer des commandes à distances avec :
-```
+```bash
 ansible ubuntu -a "ls"
 ```
