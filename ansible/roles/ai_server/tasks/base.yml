@@ -2,6 +2,10 @@
   hostname:
     name: steganodon
 
+- name: Timezone
+  shell: timedatectl set-timezone Europe/Paris
+  become: yes
+
 # - name: Mot de passe root
 #   user:
 #     name: root
