@@ -1,7 +1,7 @@
-[serveur]
-ip_de_la_machine:22
+[ubuntu]
+192.168.0.22:22
 
-#[serveur:vars]
-#ansible_user = debian
-#ansible_password = (^_^)
-#ansible_become_password = (^_^)
+[ubuntu:vars]
+ansible_user = user
+ansible_password = user
+ansible_become_password = user

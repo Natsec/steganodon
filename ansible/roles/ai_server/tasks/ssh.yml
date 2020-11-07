@@ -1,0 +1,15 @@
+- name: Répertoire /root/.ssh/
+  file:
+    state: directory
+    path: /root/.ssh
+
+- name: Config /root/.ssh/config
+  copy:
+    src: config_ssh
+    dest: /root/.ssh/config
+
+# - name: Clé publiques
+#   authorized_key:
+#     user: "{{ user }}"
+#     key: "{{ item }}"
+#   loop: "{{ pubkeys }}"

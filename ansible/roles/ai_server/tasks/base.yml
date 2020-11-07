@@ -1,6 +1,6 @@
-# - name: Hostname
-#   hostname:
-#     name: steganodon
+- name: Hostname
+  hostname:
+    name: steganodon
 
 # - name: Mot de passe root
 #   user:

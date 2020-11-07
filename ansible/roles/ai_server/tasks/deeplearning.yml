@@ -1,0 +1,6 @@
+- name: Installation des paquets
+  package:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - htop

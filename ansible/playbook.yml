@@ -1,6 +1,6 @@
 - name: Configuration du serveur de calcul
-  hosts: serveur
-  # become: yes
+  hosts: ubuntu
+  become: yes
 
   roles:
-    - deeplearning
+    - ai_server

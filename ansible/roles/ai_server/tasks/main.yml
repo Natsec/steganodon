@@ -1,4 +1,6 @@
 - include_tasks: base.yml
-- include_tasks: ssh.yml
 - include_tasks: firewall.yml
+- include_tasks: ssh.yml
 - include_tasks: custom.yml
+
+- include_tasks: deeplearning.yml
