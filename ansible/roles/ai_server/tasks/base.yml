@@ -20,7 +20,6 @@
     - htop
     - tree
     - ncat
-    - tightvncserver
 
 - name: Cron
   copy:
