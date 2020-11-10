@@ -16,8 +16,8 @@
     name: "{{ item }}"
     state: latest
   loop:
-    - man
     - htop
+    - man
     - tree
     - ncat
 
