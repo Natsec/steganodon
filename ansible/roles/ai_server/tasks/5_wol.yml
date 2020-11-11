@@ -1,0 +1,11 @@
+- name: Fichier du service
+  copy:
+    src: wol@.service
+    dest: /etc/systemd/system/wol@.service
+
+- name: Lancement au démarrage
+  systemd:
+    name: wol@{{ ansible_default_ipv4.interface }}
+    enabled: yes
+
+# Le WOL doit être activé dans le BIOS

@@ -1,3 +1,8 @@
+- name: Installation du serveur SSH
+  package:
+    name: openssh-server
+    state: latest
+
 - name: Répertoire /root/.ssh/
   file:
     state: directory
