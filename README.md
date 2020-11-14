@@ -1,6 +1,6 @@
 <p align="center">
-<img width="100px" src="https://image.flaticon.com/icons/svg/921/921887.svg" alt="logo">
+<img width="80px" src="https://image.flaticon.com/icons/svg/921/921887.svg" alt="logo">
 </p>
 
-# Steganodon project
-Machine Learning for steganalysis
+# Deep Learning for steganalysis
+The goal of the STEGANODON project is to help digital forensic investigators to rapidly identify which technique was most probably used to hide data in a picture.
