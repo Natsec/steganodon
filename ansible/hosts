@@ -3,5 +3,5 @@
 
 [ubuntu:vars]
 ansible_user = user
-ansible_password = user
-ansible_become_password = user
+ansible_password = userpass
+ansible_become_password = userpass
