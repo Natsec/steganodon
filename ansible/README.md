@@ -27,6 +27,8 @@ Installer `Ubuntu Server 20 LTS` sur le serveur avec les options suivantes :
 
 Lancer le playbook de puis la machine de contrôle :
 ```bash
+# copier les fichiers de cuDNN
+scp cuda user@ubuntu:/tmp/cuda
 # apt install ansible
 ansible-playbook playbook.yml
 ```

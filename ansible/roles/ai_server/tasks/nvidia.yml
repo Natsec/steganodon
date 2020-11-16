@@ -24,3 +24,22 @@
   register: output
 - debug:
     var: output.stdout_lines
+
+- name: Copie des fichiers cuDNN
+  copy:
+    remote_src: yes
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: a+r
+  loop:
+    - {src: "/tmp/cuda/include/cudnn.h", dest: "/usr/lib/cuda/include/"}
+    - {src: "cuda/lib64/libcudnn*", dest: "/usr/lib/cuda/lib64/"}
+
+- name: Export des librairies dans la variable d'environnement $LD_LIBRARY_PATH
+  blockinfile:
+    # equivalent d'un bashrc pour tous les utilisateurs
+    path: /etc/profile.d/cudnn.sh
+    mode: 0644
+    block: |
+      echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/lib64:$LD_LIBRARY_PATH'
+      echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/include:$LD_LIBRARY_PATH'
