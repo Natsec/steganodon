@@ -8,7 +8,7 @@ The goal of the STEGANODON project is to help digital forensic investigators to 
 
 This repo contains the following tools :
 - [Diff-Heat](https://github.com/Natsec/steganodon/tree/master/diff-heat#diff-heat) : Visualizing differences between two pictures
-- Data-Gen : Generating custom datasets to train ou models
+- Data-Gen : Generating custom datasets to train our models
 - an Ansible role to configure the server used to train our models
 
 ## Current research
@@ -20,19 +20,19 @@ Our second year school project focus on training a **best-enough** model to dete
 <!-- The following illustration gives a better picture : -->
 
 The purpose of such a model, is to give the user a rapid overview of the research path with the best success potential during his investigation. Examples of usage case includes :
-- Digital forensic analyst trying to find interesting picture among hundreds during an investigation 🕵️‍♀️🕵️‍♂️
+- Digital forensic analyst trying to find interesting picture among hundreds during an investigation 🕵️‍♀️
 - CTF player trying to guess which steganographic technique was used on a picture 😉
 
 ## Datasets
 
-The following table show the different dataset we are going to use :
+The following table present the different dataset we are going to use :
 
-| Jeu de données | nb, taille, couleur, format      | Remarques                                                  | Source                                                                                              |
-| -------------- | -------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| BOSS           | 9 074 512x512 greyscale PGM      | 2 camera models                                            | [agents.fel.cvut.cz](http://agents.fel.cvut.cz/boss/index.php?mode=VIEW&tmpl=materials)             |
-| ALASKA2        | 75 000 512x512 RGB JPG           | 40+ camera models                                          | [alaska.utt.fr](https://alaska.utt.fr/)                                                             |
-| IStego100K     | 100 000 1024x1024 RGB JPG        | 30+ camera models                                          | [groundai.com](https://www.groundai.com/project/istego100k-large-scale-image-steganalysis-dataset/) |
-| DGen-1         | 10 000 512x512 greyscale PNG     | Des images uniformes facileteront la distinction du bruit. | TEAM-06                                                                                             |
-| DGen-2         | 10 000 variable greyscale PNG    | La taille variable introduira une nouvelle fonctionnalité. | TEAM-06                                                                                             |
-| DGen-3         | 10 000 variable grey/RGB PNG     | La couleur introduira une nouvelle fonctionnalité.         | TEAM-06                                                                                             |
-| DGen-4         | 10 000 variable grey/RGB PNG/JPG | Le format d'image introduira une nouvelle fonctionnalité.  | TEAM-06                                                                                             |
+| Jeu de données | Nombre, dimensions, couleur, format | Remarques                                                  | Source                                                                                              |
+| -------------- | ----------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| BOSS           | 9 074 512x512 greyscale PGM         | 2 camera models                                            | [agents.fel.cvut.cz](http://agents.fel.cvut.cz/boss/index.php?mode=VIEW&tmpl=materials)             |
+| ALASKA2        | 75 000 512x512 RGB JPG              | 40+ camera models                                          | [alaska.utt.fr](https://alaska.utt.fr/)                                                             |
+| IStego100K     | 100 000 1024x1024 RGB JPG           | 30+ camera models                                          | [groundai.com](https://www.groundai.com/project/istego100k-large-scale-image-steganalysis-dataset/) |
+| DGen-1         | 10 000 512x512 greyscale PNG        | Des images uniformes facileteront la distinction du bruit. | TEAM-06                                                                                             |
+| DGen-2         | 10 000 variable greyscale PNG       | La taille variable introduira une nouvelle fonctionnalité. | TEAM-06                                                                                             |
+| DGen-3         | 10 000 variable grey/RGB PNG        | La couleur introduira une nouvelle fonctionnalité.         | TEAM-06                                                                                             |
+| DGen-4         | 10 000 variable grey/RGB PNG/JPG    | Le format d'image introduira une nouvelle fonctionnalité.  | TEAM-06                                                                                             |
