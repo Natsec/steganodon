@@ -13,9 +13,9 @@ This repo contains the following tools :
 
 ## Current research
 
-Current research on blind steganalysis focus on **highly efficient** neural networks models to detect the use of **one, very good steganographic algorithm**.
+Current research on blind steganalysis focus on **very accurate** neural networks models to detect the use of **one, very good steganographic algorithm**.
 
-Our second year school project focus on training a **best-enough** model to detect the most likely used technique among **several, simple steganographic algorithms**.
+Our second year school project focus on training a **accurate enough** model to detect the most likely used technique among **several, simple steganographic algorithms**.
 
 <!-- The following illustration gives a better picture : -->
 
