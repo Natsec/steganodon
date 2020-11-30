@@ -36,3 +36,9 @@ The following table present the different dataset we are going to use :
 | DGen-2         | 10 000 variable greyscale PNG       | La taille variable introduira une nouvelle fonctionnalité. | TEAM-06                                                                                             |
 | DGen-3         | 10 000 variable grey/RGB PNG        | La couleur introduira une nouvelle fonctionnalité.         | TEAM-06                                                                                             |
 | DGen-4         | 10 000 variable grey/RGB PNG/JPG    | Le format d'image introduira une nouvelle fonctionnalité.  | TEAM-06                                                                                             |
+
+## Development
+
+We use [TensorFlow](https://www.tensorflow.org/) framework to develop our models.
+
+We use [TensorBoard](https://www.tensorflow.org/tensorboard) to Visualize our model trainings. The board of our project is located [here](https://tensorboard.dev/experiment/to6cbfQcQNGOJr7NJ6rDlQ/#scalars).

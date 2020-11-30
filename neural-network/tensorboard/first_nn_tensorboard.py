@@ -6,6 +6,7 @@ from tensorflow import keras
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
+import datetime
 
 print("\nTensorflow version : {}".format(tf.__version__))
 print("Built with CUDA : {}\n".format((tf.test.is_built_with_cuda())))
@@ -79,10 +80,15 @@ model.summary()
 # Train the model
 #######################################
 
+# création callback pour enregistrer les log pour tensorboard
+log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
 # Feed the model
 model.fit(train_images,
           train_labels,
-          epochs=10)
+          epochs=20,
+          callbacks=[tensorboard_callback])
 
 # Evaluate accuracy
 test_loss, test_accuracy = model.evaluate(test_images, test_labels, verbose=2)
