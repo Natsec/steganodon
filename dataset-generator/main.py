@@ -55,7 +55,7 @@ if __name__ == '__main__':
 			raise Exception("Cover images directory was not found!")
 
 		if not os.path.isdir(stego_images_dir):
-			raise Exception("Stego images directory was not found!")
+			os.mkdir(stego_images_dir)
 
 		# stégo de chaque image cover avec un texte aléa
 		for cover_image in os.listdir(cover_images_dir):
