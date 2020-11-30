@@ -25,8 +25,8 @@ class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 
 # Explore the data
 #######################################
 
-print(train_images.shape, len(train_labels))
-print(test_images.shape, len(test_labels))
+print(train_images.shape)
+print(test_images.shape)
 
 
 #######################################
@@ -78,7 +78,7 @@ model.summary()
 #######################################
 
 # Feed the model
-# model.fit(train_images, train_labels, epochs=10)
+model.fit(train_images, train_labels, epochs=20)
 
 # Evaluate accuracy
 test_loss, test_accuracy = model.evaluate(test_images, test_labels, verbose=2)
