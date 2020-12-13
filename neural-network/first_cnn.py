@@ -16,7 +16,8 @@ import tensorflow as tf
 from tensorflow.keras import datasets, layers, models
 import matplotlib.pyplot as plt
 
-print("Built with CUDA : {}\n".format((tf.test.is_built_with_cuda())))
+print("Built with CUDA :        {}".format(tf.test.is_built_with_cuda()))
+print("Built with GPU support : {}\n".format(tf.test.is_built_with_gpu_support()))
 
 
 ########################################
@@ -54,7 +55,7 @@ for i in range(25):
     # The CIFAR labels happen to be arrays,
     # which is why you need the extra index
     plt.xlabel(class_names[train_labels[i][0]])
-plt.show()
+# plt.show()
 
 
 ########################################
