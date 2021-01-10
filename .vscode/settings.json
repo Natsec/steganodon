@@ -2,5 +2,8 @@
     "[python]": {
         "editor.formatOnSave": true
     },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
     "python.formatting.provider": "black"
 }
