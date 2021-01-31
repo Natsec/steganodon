@@ -3,11 +3,12 @@ author : KMO, ABO, JJE
 date   : 31/01/2021
 """
 
-import tensorflow as tf
 from tensorflow import keras
-import tensorflow_datasets as tfds
-import pathlib
 import numpy as np
+import os
+import pathlib
+import tensorflow as tf
+import tensorflow_datasets as tfds
 
 
 print("tensorflow version :", tf.__version__)
@@ -91,6 +92,45 @@ model.compile(
     metrics=["accuracy"],
 )
 
+
+########################################
+# Configuration des checkpoints
+########################################
+
+checkpoint_path = "training_checkpoint/cp.ckpt"
+
+# TODO : si un checkpoint existe on le charge
+if "checkpoint exist":
+    new_model.load_weights(checkpoint_path)
+# sinon on le configure
+else:
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+
+    # création d'un callback qui enregistrera les poids du modèle
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_path, save_weights_only=True, verbose=1
+    )
+    # This may generate warnings related to saving the state of the optimizer.
+    # These warnings (and similar warnings throughout this notebook)
+    # are in place to discourage outdated usage, and can be ignored.
+
+
+########################################
+# Entraînement du modèle
+########################################
+
 model.fit(
-    train_images, train_labels, epochs=10, validation_data=(test_images, test_labels)
+    train_images,
+    train_labels,
+    epochs=10,
+    validation_data=(test_images, test_labels),
+    callbacks=[cp_callback],
 )
+
+
+########################################
+# Enregistrement du modèle
+########################################
+
+# Enregistre le modèle entier, permet l'import dans tensorflow.js
+new_model.save("saved_models/lsb-cnn")
