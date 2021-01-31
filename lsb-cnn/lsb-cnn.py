@@ -97,7 +97,7 @@ model.compile(
 # Configuration des checkpoints
 ########################################
 
-checkpoint_path = "training_checkpoint/cp.ckpt"
+checkpoint_path = "checkpoints/cp.ckpt"
 
 # TODO : si un checkpoint existe on le charge
 if "checkpoint exist":
@@ -116,6 +116,15 @@ else:
 
 
 ########################################
+# Configuration de Tensorboard
+########################################
+
+# création d'un callback qui enregistrera les log pour tensorboard
+log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
+
+########################################
 # Entraînement du modèle
 ########################################
 
@@ -124,7 +133,7 @@ model.fit(
     train_labels,
     epochs=10,
     validation_data=(test_images, test_labels),
-    callbacks=[cp_callback],
+    callbacks=[cp_callback, tensorboard_callback],
 )
 
 
@@ -133,4 +142,4 @@ model.fit(
 ########################################
 
 # Enregistre le modèle entier, permet l'import dans tensorflow.js
-new_model.save("saved_models/lsb-cnn")
+new_model.save("saved_model/lsb-cnn")

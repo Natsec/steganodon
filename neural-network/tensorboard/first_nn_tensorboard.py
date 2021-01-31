@@ -3,6 +3,7 @@
 # TensorFlow and tf.keras
 import tensorflow as tf
 from tensorflow import keras
+
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,7 +20,18 @@ tf.test.Benchmark()
 fashion_mnist = keras.datasets.fashion_mnist
 (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+class_names = [
+    "T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt",
+    "Sneaker",
+    "Bag",
+    "Ankle boot",
+]
 
 
 #######################################
@@ -61,16 +73,20 @@ test_images = test_images / 255.0
 #######################################
 
 # Set up the layers
-model = keras.Sequential([
-    keras.layers.Flatten(input_shape=(28, 28)),
-    keras.layers.Dense(128, activation='relu'),
-    keras.layers.Dense(10)
-])
+model = keras.Sequential(
+    [
+        keras.layers.Flatten(input_shape=(28, 28)),
+        keras.layers.Dense(128, activation="relu"),
+        keras.layers.Dense(10),
+    ]
+)
 
 # Compile the model
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
+model.compile(
+    optimizer="adam",
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    metrics=["accuracy"],
+)
 
 # Display the model's architecture
 model.summary()
@@ -85,24 +101,25 @@ log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
 # Feed the model
-model.fit(train_images,
-          train_labels,
-          epochs=20,
-          callbacks=[tensorboard_callback])
+model.fit(train_images, train_labels, epochs=20, callbacks=[tensorboard_callback])
 
 # Evaluate accuracy
 test_loss, test_accuracy = model.evaluate(test_images, test_labels, verbose=2)
-test_accuracy = round(test_accuracy*100, 2)
+test_accuracy = round(test_accuracy * 100, 2)
 print("\nModel accuracy on evaluation data : {}%".format(test_accuracy))
 
 # Make predictions
 probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])
 
-predictions = probability_model.predict(test_images)*100
+predictions = probability_model.predict(test_images) * 100
 i = 0
-print("\nPrediction for {} : {} ({})".format(class_names[test_labels[i]],
-                                             class_names[np.argmax(predictions[i])],
-                                             predictions[i]))
+print(
+    "\nPrediction for {} : {} ({})".format(
+        class_names[test_labels[i]],
+        class_names[np.argmax(predictions[i])],
+        predictions[i],
+    )
+)
 
 # afficher la prediction
 plt.figure()
@@ -111,6 +128,6 @@ plt.colorbar()
 # plt.show()
 
 fig = plt.figure()
-ax = fig.add_axes([0,0,1,1])
-plt.bar(class_names,predictions[i])
+ax = fig.add_axes([0, 0, 1, 1])
+plt.bar(class_names, predictions[i])
 plt.show()
