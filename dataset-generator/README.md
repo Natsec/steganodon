@@ -28,7 +28,7 @@ The first step is to get any dataset from the net and store all of its images in
 Then your script is ready to be used:
 
 ```bash
-./main.py
+python3 dataset-generator.py
 ```
 
 This will create the `./stego-images` directory with all the stego images.
