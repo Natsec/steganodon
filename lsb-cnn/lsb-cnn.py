@@ -20,6 +20,7 @@ import numpy as np
 import os
 import pathlib
 import tensorflow as tf
+
 # import tensorflow_datasets as tfds
 import builtins
 
@@ -37,15 +38,22 @@ def print(*args):
     builtins.print("\033[0m", end="")
 
 
-def main():
-    print(f"TensorFlow version : {tf.__version__}")
+def load_dataset(data_dir, img_size):
+    """Loads the dataset in memory.
 
+    This function deduces the different classes of pictures from the directory structure, and load them in memory to improve performance.
 
-    #----------------------------------------
-    # Chargement du dataset
-    #----------------------------------------
+    Args:
+        data_dir (str): Relative path of the directory containing the dataset.
+        img_size (tuple): Dimension of the training pictures in pixel.
 
-    data_dir = pathlib.Path("dataset")
+    Returns:
+        train_ds (obj): Training pictures loaded in memory.
+        val_ds (obj): Validation pictures loaded in memory.
+        class_names (list): Labels of the pictures.
+    """
+
+    data_dir = pathlib.Path(data_dir)
     """str: Relative path of the directory containing the dataset."""
 
     # compter le dataset
@@ -54,10 +62,6 @@ def main():
     print(f"Le dataset contient {image_count} images.")
 
     batch_size = 32
-    img_height = 180
-    """int: Height of pictures in pixel."""
-    img_width = 180
-    """int: Width of pictures in pixel."""
 
     # charger le dataset en mémoire (images d'entraînement)
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -65,7 +69,7 @@ def main():
         validation_split=0.2,
         subset="training",
         seed=123,
-        image_size=(img_height, img_width),
+        image_size=img_size,
         batch_size=batch_size,
     )
     """obj: Pictures used for training the model."""
@@ -94,10 +98,21 @@ def main():
     val_ds = val_ds.cache().prefetch(buffer_size=SIZE)
     """obj: Cached validation pictures."""
 
+    return train_ds, val_ds, class_names
 
-    #----------------------------------------
+
+def main():
+    print(f"TensorFlow version : {tf.__version__}")
+
+    # ----------------------------------------
+    # Chargement du dataset
+    # ----------------------------------------
+
+    train_images, test_images, labels = load_dataset("dataset", (180, 180))
+
+    # ----------------------------------------
     # Création du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     model = tf.keras.Sequential(
         [
@@ -129,10 +144,9 @@ def main():
         metrics=["accuracy"],
     )
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Configuration des checkpoints
-    #----------------------------------------
+    # ----------------------------------------
 
     checkpoint_path = "checkpoints/cp.ckpt"
     """str: Relatif path of the directory containing the checkpoints."""
@@ -154,36 +168,37 @@ def main():
         # These warnings (and similar warnings throughout this notebook)
         # are in place to discourage outdated usage, and can be ignored.
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Configuration de Tensorboard
-    #----------------------------------------
+    # ----------------------------------------
 
     # création d'un callback qui enregistrera les log pour tensorboard
     log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     """str: Relative path of the directory containing training logs used by TensorBoard."""
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(
+        log_dir=log_dir, histogram_freq=1
+    )
     """ojb: Function that will be called to save training logs after each epoch."""
 
-    #----------------------------------------
+    # ----------------------------------------
     # Entraînement du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     model.fit(
         train_images,
-        train_labels,
+        labels,
         epochs=10,
-        validation_data=(test_images, test_labels),
+        validation_data=(test_images, labels),
         callbacks=[cp_callback, tensorboard_callback],
     )
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Enregistrement du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     # Enregistre le modèle entier, permet l'import dans tensorflow.js
     new_model.save("saved_model/lsb-cnn")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

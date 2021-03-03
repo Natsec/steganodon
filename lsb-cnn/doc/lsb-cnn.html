@@ -59,6 +59,7 @@ import numpy as np
 import os
 import pathlib
 import tensorflow as tf
+
 # import tensorflow_datasets as tfds
 import builtins
 
@@ -76,15 +77,22 @@ def print(*args):
     builtins.print(&#34;\033[0m&#34;, end=&#34;&#34;)
 
 
-def main():
-    print(f&#34;TensorFlow version : {tf.__version__}&#34;)
+def load_dataset(data_dir, img_size):
+    &#34;&#34;&#34;Loads the dataset in memory.
 
+    This function deduces the different classes of pictures from the directory structure, and load them in memory to improve performance.
 
-    #----------------------------------------
-    # Chargement du dataset
-    #----------------------------------------
+    Args:
+        data_dir (str): Relative path of the directory containing the dataset.
+        img_size (tuple): Dimension of the training pictures in pixel.
 
-    data_dir = pathlib.Path(&#34;dataset&#34;)
+    Returns:
+        train_ds (obj): Training pictures loaded in memory.
+        val_ds (obj): Validation pictures loaded in memory.
+        class_names (list): Labels of the pictures.
+    &#34;&#34;&#34;
+
+    data_dir = pathlib.Path(data_dir)
     &#34;&#34;&#34;str: Relative path of the directory containing the dataset.&#34;&#34;&#34;
 
     # compter le dataset
@@ -93,10 +101,6 @@ def main():
     print(f&#34;Le dataset contient {image_count} images.&#34;)
 
     batch_size = 32
-    img_height = 180
-    &#34;&#34;&#34;int: Height of pictures in pixel.&#34;&#34;&#34;
-    img_width = 180
-    &#34;&#34;&#34;int: Width of pictures in pixel.&#34;&#34;&#34;
 
     # charger le dataset en mémoire (images d&#39;entraînement)
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -104,7 +108,7 @@ def main():
         validation_split=0.2,
         subset=&#34;training&#34;,
         seed=123,
-        image_size=(img_height, img_width),
+        image_size=img_size,
         batch_size=batch_size,
     )
     &#34;&#34;&#34;obj: Pictures used for training the model.&#34;&#34;&#34;
@@ -133,10 +137,21 @@ def main():
     val_ds = val_ds.cache().prefetch(buffer_size=SIZE)
     &#34;&#34;&#34;obj: Cached validation pictures.&#34;&#34;&#34;
 
+    return train_ds, val_ds, class_names
 
-    #----------------------------------------
+
+def main():
+    print(f&#34;TensorFlow version : {tf.__version__}&#34;)
+
+    # ----------------------------------------
+    # Chargement du dataset
+    # ----------------------------------------
+
+    train_images, test_images, labels = load_dataset(&#34;dataset&#34;, (180, 180))
+
+    # ----------------------------------------
     # Création du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     model = tf.keras.Sequential(
         [
@@ -168,10 +183,9 @@ def main():
         metrics=[&#34;accuracy&#34;],
     )
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Configuration des checkpoints
-    #----------------------------------------
+    # ----------------------------------------
 
     checkpoint_path = &#34;checkpoints/cp.ckpt&#34;
     &#34;&#34;&#34;str: Relatif path of the directory containing the checkpoints.&#34;&#34;&#34;
@@ -193,38 +207,39 @@ def main():
         # These warnings (and similar warnings throughout this notebook)
         # are in place to discourage outdated usage, and can be ignored.
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Configuration de Tensorboard
-    #----------------------------------------
+    # ----------------------------------------
 
     # création d&#39;un callback qui enregistrera les log pour tensorboard
     log_dir = &#34;logs/fit/&#34; + datetime.datetime.now().strftime(&#34;%Y%m%d-%H%M%S&#34;)
     &#34;&#34;&#34;str: Relative path of the directory containing training logs used by TensorBoard.&#34;&#34;&#34;
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(
+        log_dir=log_dir, histogram_freq=1
+    )
     &#34;&#34;&#34;ojb: Function that will be called to save training logs after each epoch.&#34;&#34;&#34;
 
-    #----------------------------------------
+    # ----------------------------------------
     # Entraînement du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     model.fit(
         train_images,
-        train_labels,
+        labels,
         epochs=10,
-        validation_data=(test_images, test_labels),
+        validation_data=(test_images, labels),
         callbacks=[cp_callback, tensorboard_callback],
     )
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Enregistrement du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     # Enregistre le modèle entier, permet l&#39;import dans tensorflow.js
     new_model.save(&#34;saved_model/lsb-cnn&#34;)
 
-if __name__ == &#39;__main__&#39;:
+
+if __name__ == &#34;__main__&#34;:
     main()</code></pre>
 </details>
 </section>
@@ -235,6 +250,90 @@ if __name__ == &#39;__main__&#39;:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="lsb-cnn.load_dataset"><code class="name flex">
+<span>def <span class="ident">load_dataset</span></span>(<span>data_dir, img_size)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Loads the dataset in memory.</p>
+<p>This function deduces the different classes of pictures from the directory structure, and load them in memory to improve performance.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data_dir</code></strong> :&ensp;<code>str</code></dt>
+<dd>Relative path of the directory containing the dataset.</dd>
+<dt><strong><code>img_size</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Dimension of the training pictures in pixel.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>train_ds (obj): Training pictures loaded in memory.
+val_ds (obj): Validation pictures loaded in memory.
+class_names (list): Labels of the pictures.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_dataset(data_dir, img_size):
+    &#34;&#34;&#34;Loads the dataset in memory.
+
+    This function deduces the different classes of pictures from the directory structure, and load them in memory to improve performance.
+
+    Args:
+        data_dir (str): Relative path of the directory containing the dataset.
+        img_size (tuple): Dimension of the training pictures in pixel.
+
+    Returns:
+        train_ds (obj): Training pictures loaded in memory.
+        val_ds (obj): Validation pictures loaded in memory.
+        class_names (list): Labels of the pictures.
+    &#34;&#34;&#34;
+
+    data_dir = pathlib.Path(data_dir)
+    &#34;&#34;&#34;str: Relative path of the directory containing the dataset.&#34;&#34;&#34;
+
+    # compter le dataset
+    image_count = len(list(data_dir.glob(&#34;*/*.jpg&#34;)))
+    &#34;&#34;&#34;int: Number of pictures in the dataset.&#34;&#34;&#34;
+    print(f&#34;Le dataset contient {image_count} images.&#34;)
+
+    batch_size = 32
+
+    # charger le dataset en mémoire (images d&#39;entraînement)
+    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+        data_dir,
+        validation_split=0.2,
+        subset=&#34;training&#34;,
+        seed=123,
+        image_size=img_size,
+        batch_size=batch_size,
+    )
+    &#34;&#34;&#34;obj: Pictures used for training the model.&#34;&#34;&#34;
+
+    # charger le dataset en mémoire (images d&#39;évaluation)
+    val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+        data_dir,
+        validation_split=0.2,
+        subset=&#34;validation&#34;,
+        seed=123,
+        image_size=(img_height, img_width),
+        batch_size=batch_size,
+    )
+    &#34;&#34;&#34;obj: Pictures used for validation of the model.&#34;&#34;&#34;
+
+    # afficher les labels
+    class_names = train_ds.class_names
+    &#34;&#34;&#34;list: Class name of the pictures.&#34;&#34;&#34;
+    print(f&#34;Labels : {class_names}&#34;)
+
+    # mise en cache des données pour améliorier les performances
+    # https://stackoverflow.com/questions/46444018/meaning-of-buffer-size-in-dataset-map-dataset-prefetch-and-dataset-shuffle#answer-48096625
+    SIZE = int(image_count * 1.1)
+    train_ds = train_ds.cache().prefetch(buffer_size=SIZE)
+    &#34;&#34;&#34;obj: Cached training pictures.&#34;&#34;&#34;
+    val_ds = val_ds.cache().prefetch(buffer_size=SIZE)
+    &#34;&#34;&#34;obj: Cached validation pictures.&#34;&#34;&#34;
+
+    return train_ds, val_ds, class_names</code></pre>
+</details>
+</dd>
 <dt id="lsb-cnn.main"><code class="name flex">
 <span>def <span class="ident">main</span></span>(<span>)</span>
 </code></dt>
@@ -247,64 +346,15 @@ if __name__ == &#39;__main__&#39;:
 <pre><code class="python">def main():
     print(f&#34;TensorFlow version : {tf.__version__}&#34;)
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Chargement du dataset
-    #----------------------------------------
+    # ----------------------------------------
 
-    data_dir = pathlib.Path(&#34;dataset&#34;)
-    &#34;&#34;&#34;str: Relative path of the directory containing the dataset.&#34;&#34;&#34;
+    train_images, test_images, labels = load_dataset(&#34;dataset&#34;, (180, 180))
 
-    # compter le dataset
-    image_count = len(list(data_dir.glob(&#34;*/*.jpg&#34;)))
-    &#34;&#34;&#34;int: Number of pictures in the dataset.&#34;&#34;&#34;
-    print(f&#34;Le dataset contient {image_count} images.&#34;)
-
-    batch_size = 32
-    img_height = 180
-    &#34;&#34;&#34;int: Height of pictures in pixel.&#34;&#34;&#34;
-    img_width = 180
-    &#34;&#34;&#34;int: Width of pictures in pixel.&#34;&#34;&#34;
-
-    # charger le dataset en mémoire (images d&#39;entraînement)
-    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        data_dir,
-        validation_split=0.2,
-        subset=&#34;training&#34;,
-        seed=123,
-        image_size=(img_height, img_width),
-        batch_size=batch_size,
-    )
-    &#34;&#34;&#34;obj: Pictures used for training the model.&#34;&#34;&#34;
-
-    # charger le dataset en mémoire (images d&#39;évaluation)
-    val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        data_dir,
-        validation_split=0.2,
-        subset=&#34;validation&#34;,
-        seed=123,
-        image_size=(img_height, img_width),
-        batch_size=batch_size,
-    )
-    &#34;&#34;&#34;obj: Pictures used for validation of the model.&#34;&#34;&#34;
-
-    # afficher les labels
-    class_names = train_ds.class_names
-    &#34;&#34;&#34;list: Class name of the pictures.&#34;&#34;&#34;
-    print(f&#34;Labels : {class_names}&#34;)
-
-    # mise en cache des données pour améliorier les performances
-    # https://stackoverflow.com/questions/46444018/meaning-of-buffer-size-in-dataset-map-dataset-prefetch-and-dataset-shuffle#answer-48096625
-    SIZE = int(image_count * 1.1)
-    train_ds = train_ds.cache().prefetch(buffer_size=SIZE)
-    &#34;&#34;&#34;obj: Cached training pictures.&#34;&#34;&#34;
-    val_ds = val_ds.cache().prefetch(buffer_size=SIZE)
-    &#34;&#34;&#34;obj: Cached validation pictures.&#34;&#34;&#34;
-
-
-    #----------------------------------------
+    # ----------------------------------------
     # Création du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     model = tf.keras.Sequential(
         [
@@ -336,10 +386,9 @@ if __name__ == &#39;__main__&#39;:
         metrics=[&#34;accuracy&#34;],
     )
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Configuration des checkpoints
-    #----------------------------------------
+    # ----------------------------------------
 
     checkpoint_path = &#34;checkpoints/cp.ckpt&#34;
     &#34;&#34;&#34;str: Relatif path of the directory containing the checkpoints.&#34;&#34;&#34;
@@ -361,33 +410,33 @@ if __name__ == &#39;__main__&#39;:
         # These warnings (and similar warnings throughout this notebook)
         # are in place to discourage outdated usage, and can be ignored.
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Configuration de Tensorboard
-    #----------------------------------------
+    # ----------------------------------------
 
     # création d&#39;un callback qui enregistrera les log pour tensorboard
     log_dir = &#34;logs/fit/&#34; + datetime.datetime.now().strftime(&#34;%Y%m%d-%H%M%S&#34;)
     &#34;&#34;&#34;str: Relative path of the directory containing training logs used by TensorBoard.&#34;&#34;&#34;
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(
+        log_dir=log_dir, histogram_freq=1
+    )
     &#34;&#34;&#34;ojb: Function that will be called to save training logs after each epoch.&#34;&#34;&#34;
 
-    #----------------------------------------
+    # ----------------------------------------
     # Entraînement du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     model.fit(
         train_images,
-        train_labels,
+        labels,
         epochs=10,
-        validation_data=(test_images, test_labels),
+        validation_data=(test_images, labels),
         callbacks=[cp_callback, tensorboard_callback],
     )
 
-
-    #----------------------------------------
+    # ----------------------------------------
     # Enregistrement du modèle
-    #----------------------------------------
+    # ----------------------------------------
 
     # Enregistre le modèle entier, permet l&#39;import dans tensorflow.js
     new_model.save(&#34;saved_model/lsb-cnn&#34;)</code></pre>
@@ -434,6 +483,7 @@ if __name__ == &#39;__main__&#39;:
 <ul id="index">
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="lsb-cnn.load_dataset" href="#lsb-cnn.load_dataset">load_dataset</a></code></li>
 <li><code><a title="lsb-cnn.main" href="#lsb-cnn.main">main</a></code></li>
 <li><code><a title="lsb-cnn.print" href="#lsb-cnn.print">print</a></code></li>
 </ul>
