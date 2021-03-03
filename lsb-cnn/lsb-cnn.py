@@ -1,21 +1,21 @@
-"""Entraînement d'un CNN pour la détection de LSB.
+"""Training of a CNN model for LSB steganography detection.
 
-Ce programme python effectue l'entraînement d'un modèle de réseau de neurones convolutif.
+This python program trains a Convolutional Neural Network model to detect the use of Least Significant Bit steganography in a picture.
 
-Il effectue les tâches suivantes :
-    - chargement des images à partir d'un répertoire
-    - création d'un modèle CNN
-    - entraînement du modèle
-    - enregistrement de checkpoints au cours de l'entraînement
-    - enregistrement du modèle entraîné à la fin
-    - enregistrement des données d'entraînement pour tensorboard
+It makes the following tasks :
+    - loads images from a directory
+    - creates a CNN model
+    - trains the CNN model (or resumes it's training if checkpoints already exists)
+    - saves checkpoint during training
+    - saves the whole model at the end of the training
+    - records training data for TensorBoard
 
 author :
     - Kamil Mohoboob
     - Jean Jestin-Scanvion
     - Amaury Bonnaud
 
-date   :
+date :
     03/03/2021
 """
 
@@ -24,32 +24,47 @@ import numpy as np
 import os
 import pathlib
 import tensorflow as tf
-import tensorflow_datasets as tfds
+# import tensorflow_datasets as tfds
+import builtins
 
 
-print("tensorflow version :", tf.__version__)
+def print(*args):
+    """Override of the builtin print function.
+
+    This rewrite prints text in color for better visibility.
+
+    Args:
+        *args (obj): Variable number of argument without keywords.
+    """
+    builtins.print("\033[34m[INFO] ", end="")
+    builtins.print(*args)
+    builtins.print("\033[0m", end="")
+
+
+print(f"TensorFlow version : {tf.__version__}")
 
 
 ########################################
 # Chargement du dataset
 ########################################
 
-data_dir = tf.keras.utils.get_file(
-    origin=dataset_url, fname="flower_photos", untar=True
-)
-data_dir = pathlib.Path(data_dir)
-"""str: Chemin du répertoire contenant les images du dataset."""
+# data_dir = tf.keras.utils.get_file(
+#     origin=dataset_url, fname="flower_photos", untar=True
+# )
+data_dir = pathlib.Path("dataset")
+"""str: Relative path of the directory containing the dataset."""
 
 # compter le dataset
 image_count = len(list(data_dir.glob("*/*.jpg")))
-"""int: Nombre d'images du dataset"""
+"""int: Number of pictures in the dataset."""
 print(f"Le dataset contient {image_count} images.")
 
 batch_size = 32
 img_height = 180
-"""int: Hauteur des images en pixel."""
+"""int: Height of pictures in pixel."""
 img_width = 180
-"""int: Largeur des images en pixel."""
+"""int: Width of pictures in pixel."""
+
 # charger le dataset en mémoire (images d'entraînement)
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     data_dir,
@@ -59,7 +74,8 @@ train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     image_size=(img_height, img_width),
     batch_size=batch_size,
 )
-"""obj: Images retenues pour l'entraînement."""
+"""obj: Pictures used for training the model."""
+
 # charger le dataset en mémoire (images d'évaluation)
 val_ds = tf.keras.preprocessing.image_dataset_from_directory(
     data_dir,
@@ -69,19 +85,20 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
     image_size=(img_height, img_width),
     batch_size=batch_size,
 )
-"""obj: Images retenues pour la validation du modèle."""
+"""obj: Pictures used for validation of the model."""
+
 # afficher les labels
 class_names = train_ds.class_names
-"""list: Nom des classes d'images."""
+"""list: Class name of the pictures."""
 print(f"Labels : {class_names}")
 
 # mise en cache des données pour améliorier les performances
 # https://stackoverflow.com/questions/46444018/meaning-of-buffer-size-in-dataset-map-dataset-prefetch-and-dataset-shuffle#answer-48096625
 SIZE = int(image_count * 1.1)
 train_ds = train_ds.cache().prefetch(buffer_size=SIZE)
-"""obj: Images d'entraînement mises en cache."""
+"""obj: Cached training pictures."""
 val_ds = val_ds.cache().prefetch(buffer_size=SIZE)
-"""obj: Images de validation mises en cache."""
+"""obj: Cached validation pictures."""
 
 
 ########################################
@@ -106,7 +123,7 @@ model = tf.keras.Sequential(
         layers.Dense(2),
     ]
 )
-"""obj: Modèle de réseau de neurones convolutif."""
+"""obj: Convolutional Neural Network model."""
 
 # affichage du résumé du modèle
 model.summary()
@@ -124,7 +141,7 @@ model.compile(
 ########################################
 
 checkpoint_path = "checkpoints/cp.ckpt"
-"""str: Chemin relatif du répertoire qui contient les checkpoints."""
+"""str: Relatif path of the directory containing the checkpoints."""
 
 # TODO : si un checkpoint existe on le charge
 if "checkpoint exist":
@@ -132,13 +149,13 @@ if "checkpoint exist":
 # sinon on le configure
 else:
     checkpoint_dir = os.path.dirname(checkpoint_path)
-    """str: Chemin complet du répertoire qui contient les checkpoints."""
+    """str: Full path of the directory containing the checkpoints."""
 
     # création d'un callback qui enregistrera les poids du modèle
     cp_callback = tf.keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_path, save_weights_only=True, verbose=1
     )
-    """obj: Fonction qui sera appelée pour sauvegarder l'état de l'entraînement après chaque période."""
+    """obj: Function that will be called to save the training state of the model after each epoch."""
     # This may generate warnings related to saving the state of the optimizer.
     # These warnings (and similar warnings throughout this notebook)
     # are in place to discourage outdated usage, and can be ignored.
@@ -150,9 +167,9 @@ else:
 
 # création d'un callback qui enregistrera les log pour tensorboard
 log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-"""str: Chemin relatif du répertoire qui contient les logs d'entraînement utilisés par TensorBoard."""
+"""str: Relative path of the directory containing training logs used by TensorBoard."""
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
-"""ojb: Fonction qui sera appelée pour enregistrer les logs d'entraînement après chaque période."""
+"""ojb: Function that will be called to save training logs after each epoch."""
 
 ########################################
 # Entraînement du modèle

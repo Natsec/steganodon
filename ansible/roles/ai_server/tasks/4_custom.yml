@@ -1,13 +1,13 @@
-- name: Fichier bash_aliases
+- name: Fichier alias
   copy:
-    src: bash_aliases
-    dest: /root/.bash_aliases
+    src: alias
+    dest: /root/.alias
 
 - name: Inclusion dans .bashrc
   blockinfile:
     path: /root/.bashrc
-    marker: "# {mark} bash_aliases"
+    marker: "# {mark} alias"
     block: |
-      if [ -f ~/.bash_aliases ]; then
-        . ~/.bash_aliases
+      if [ -f ~/.alias ]; then
+        . ~/.alias
       fi

@@ -16,10 +16,11 @@
     name: "{{ item }}"
     state: latest
   loop:
-    - htop
     - man
+    - tmux
+    - htop
+    - ncdu
     - tree
-    - ncat
 
 - name: Cron
   copy:
