@@ -2,9 +2,14 @@
     "[python]": {
         "editor.formatOnSave": true
     },
+    "editor.formatOnSave": true,
+    "editor.renderLineHighlight": "all",
+    "editor.renderWhitespace": "boundary",
+    "editor.stickyTabStops": true,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
+    "git.autofetch": true,
     "python.formatting.provider": "black",
     "python.linting.enabled": false
 }
