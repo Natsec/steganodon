@@ -2,14 +2,6 @@
 
 This python program trains a Convolutional Neural Network model to detect the use of Least Significant Bit steganography in a picture.
 
-It makes the following tasks :
-    - loads images from a directory
-    - creates a CNN model
-    - trains the CNN model (or resumes it's training if checkpoints already exists)
-    - saves checkpoint during training
-    - saves the whole model at the end of the training
-    - records training data for TensorBoard
-
 author : Kamil Mohoboob, Jean Jestin-Scanvion, Amaury Bonnaud
 
 date : 03/03/2021
