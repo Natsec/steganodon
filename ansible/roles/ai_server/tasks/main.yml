@@ -1,8 +1,0 @@
-- include_tasks: 1_base.yml
-- include_tasks: 2_firewall.yml
-- include_tasks: 3_ssh.yml
-- include_tasks: 4_custom.yml
-- include_tasks: 5_wol.yml
-
-- include_tasks: nvidia.yml
-- include_tasks: python.yml

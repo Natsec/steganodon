@@ -1,0 +1,13 @@
+- name: Timezone
+  shell: timedatectl set-timezone Europe/Paris
+  become: yes
+
+- name: Installation des paquets
+  package:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - tmux
+    - htop
+    - ncdu
+    - tree

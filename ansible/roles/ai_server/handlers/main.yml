@@ -1,9 +1,0 @@
-- name: restart sshd
-  systemd:
-    name: sshd
-    state: restarted
-
-- name: restart nftables
-  systemd:
-    name: nftables
-    state: restarted

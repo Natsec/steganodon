@@ -1,0 +1,16 @@
+- name: Installation du serveur SSH
+  package:
+    name: openssh-server
+    state: latest
+
+- name: Répertoire ~/.ssh
+  file:
+    state: directory
+    path: /home/{{ item }}/.ssh
+  loop: "{{ users }}"
+
+- name: Clé publiques
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item }}"
+  loop: "{{ pubkeys }}"

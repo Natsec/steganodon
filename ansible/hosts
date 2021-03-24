@@ -1,7 +1,7 @@
 [ubuntu]
-192.168.0.21:22
+172.16.22.1:22
 
 [ubuntu:vars]
 ansible_user = user
-ansible_password = userpass
-ansible_become_password = userpass
+ansible_password = V@nnes56;
+ansible_become_password = V@nnes56;

@@ -1,0 +1,9 @@
+users:
+  - amorix
+  - processor
+  - natsec
+
+pubkeys:
+  amorix:
+  processor:
+  natsec: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJqKUGLtZr5Sl0FKqwRhN+Jm32xHGCPToVmsWkF6a0ne8vedXh+OBIBzNY9o5qOa+pmr+XEk4cpj8CLHwBDkApUrrgMgsOPPHs/IVPSNBLiEyEw3QJqOYZpvCoSjQXOre0VUoYQooYOfMUj1mXyP60hk+1i+APbCgw2k8Yy1gBw82IkhnGr1huqJDmSi7vK3vTPk3+MX/CRFppi5oNdrxPi6AW7vuhu7ng/To25JF51OONj/+38HG0df6cWIMV+FQEk5slxczKeh/loVvQNdxClzW7IsPxMfZaE0Vz1xurV4IuWlQAyLHkS6ybahJX+TR2AFR8vubiXttS+gAMyXGd user@debian.home.org

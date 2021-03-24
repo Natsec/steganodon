@@ -3,4 +3,4 @@
   become: yes
 
   roles:
-    - ai_server
+    - calcul_server
