@@ -1,6 +1,5 @@
 - name: Timezone
   shell: timedatectl set-timezone Europe/Paris
-  become: yes
 
 - name: Installation des paquets
   package:

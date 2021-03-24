@@ -1,35 +1,35 @@
-- [Ansible](#ansible)
-	- [Installation du serveur](#installation-du-serveur)
-	- [Matrice de flux du pare-feu du réseau](#matrice-de-flux-du-pare-feu-du-réseau)
-	- [Lancement du playbook Ansible](#lancement-du-playbook-ansible)
-	- [Wake on Lan](#wake-on-lan)
-	- [NVIDIA](#nvidia)
+- [Installation du serveur](#installation-du-serveur)
+- [Configuration avec Ansible](#configuration-avec-ansible)
+- [Matrice de flux du pare-feu du réseau](#matrice-de-flux-du-pare-feu-du-réseau)
+- [NVIDIA](#nvidia)
 
-# Ansible
-Rôle Ansible qui configure le serveur de calcul du projet.
+# Configuration du serveur de calcul
 
 >https://towardsdatascience.com/set-up-of-a-personal-gpu-server-for-machine-learning-with-ubuntu-20-04-100e787105ad
 
 ## Installation du serveur
-Installer `Ubuntu Server 20 LTS` sur le serveur avec les options suivantes :
+
+Installer `Ubuntu Server 20 LTS` avec les options suivantes :
 - Cocher l'installation d'un serveur SSH
-- Compte utilisateur `user:userpass`
+- Compte utilisateur `user:user`
 
-## Matrice de flux du pare-feu du réseau
+## Configuration avec Ansible
 
-| De / Vers |   Machine   |  VPN  |    Internet    |
-| :-------: | :---------: | :---: | :------------: |
-|  Machine  |      -      |       | DNS,HTTP,HTTPS |
-|    VPN    |     SSH     |   -   |                |
-| Internet  | Wake On Lan |       |       -        |
+Rôle Ansible qui configure le serveur de calcul du projet.
 
-## Lancement du playbook Ansible
-
-Lancer le playbook de puis la machine de contrôle :
+Actions à faire avant le premier lancement de ansible, sur la machine de contrôle :
 ```bash
 # copier les fichiers de cuDNN
 scp cuda user@ubuntu:/tmp/cuda
-# apt install ansible
+
+ssh user@ubuntu
+    # sur la machine distante
+    sudo apt install python python-apt
+```
+
+Lancer le playbook depuis la machine de contrôle :
+```bash
+# apt install ansible sshpass
 ansible-playbook playbook.yml
 ```
 
@@ -38,18 +38,13 @@ On peut lancer des commandes à distances avec :
 ansible ubuntu -a "ls"
 ```
 
-## Wake on Lan
-Le WOL doit être activé dans le BIOS.
-Et le routeur doit faire relai wol (et arp statique ?).
+## Matrice de flux du pare-feu du réseau
 
-Pour tester depuis son pc :
-```bash
-# apt install wakeonlan
-# en utilisant l'adresse de broadcast locale
-wakeonlan -i 255.255.255.255 30:9c:23:ac:5d:39
-# en utilisant l'adresse de broadcast d'un subnet
-wakeonlan -i 192.168.0.255 30:9c:23:ac:5d:39
-```
+| De / Vers |   Machine   |  VPN  |    Internet    |
+| :-------: | :---------: | :---: | :------------: |
+|  Machine  |      -      |       | DNS,HTTP,HTTPS |
+|    VPN    |     SSH     |   -   |                |
+| Internet  | Wake On Lan |       |       -        |
 
 ## NVIDIA
 
