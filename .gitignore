@@ -1,1 +1,2 @@
-lsb-cnn/__pycache__/
+lsb-cnn/__pycache__
+ansible/playbook.retry

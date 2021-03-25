@@ -1,5 +1,6 @@
 - [Installation du serveur](#installation-du-serveur)
 - [Configuration avec Ansible](#configuration-avec-ansible)
+  - [Authentification par clé SSH](#authentification-par-clé-ssh)
 - [Matrice de flux du pare-feu du réseau](#matrice-de-flux-du-pare-feu-du-réseau)
 - [NVIDIA](#nvidia)
 
@@ -37,6 +38,30 @@ On peut lancer des commandes à distances avec :
 ```bash
 ansible ubuntu -a "ls"
 ```
+
+### Authentification par clé SSH
+
+Générer une paire de clé sur la machine cliente :
+```bash
+ssh-keygen -f ~/.ssh/id_projet2a_natsec
+```
+
+Copier la clé publique vers le serveur :
+```bash
+ssh-copy-id -i ~/.ssh/id_projet2a_natsec.pub natsec@172.16.22.1
+# OU
+# copier la clé publique dans le fichier /home/natsec/.ssh/authorized_keys du serveur
+```
+
+Editer le fichier `~/.ssh/config` :
+```
+Host s serveur_de_calcul
+    HostName 172.16.22.1
+    IdentityFile ~/.ssh/id_projet2a_natsec
+    User natsec
+```
+
+Quand la commande `ssh s` fonctionne, copier la clé publique dans le fichier `/roles/calcul_server/vars/main.yml`.
 
 ## Matrice de flux du pare-feu du réseau
 

@@ -11,6 +11,6 @@
 
 - name: Clé publiques
   authorized_key:
-    user: "{{ item.name }}"
-    key: "{{ item }}"
-  loop: "{{ pubkeys }}"
+    user: "{{ item.key }}"
+    key: "{{ item.value }}"
+  loop: "{{ pubkeys | dict2items }}"
