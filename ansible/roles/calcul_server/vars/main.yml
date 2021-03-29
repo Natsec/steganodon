@@ -6,4 +6,4 @@ users:
 pubkeys:
   amorix:
   processor:
-  natsec: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSi86WhkiBJwN7UvqR3QoAnusMUWf2p2VNt5z+6L9b989vhqWT03iMyWLf0CwAAWoy2LCiWDG5z0CP8GjZugXCaD6ZszSWWo+qVm/TSBUWK5t78hieAwrI2eZne97wMPMvoqehvBjjN9QepHwud8xN11QlDS0AEImtjQXmEM5qm7dWIJ04O7Rt3/9ltCLtcSLzEP831yB2moVVX3jTySHnF6tvVG93vyIC+yxUXIJWutSnQ7SujN2vCp0w3idB6Qfp+cM+s7VqJqXAuJcv7YnEe1RXQUZ3S2Cq3G8e99mhUw3THucxdIj/cw3Km1y+Tj5IPVYNzyvlB36+nWrwEzAj user@debian.home.org
+  natsec: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0OayAcZ0cRSWNHcVra4kY1Nh8VTnXrloQS7nJwDAIR serveur calcul projet2A

@@ -4,4 +4,5 @@
     groups: sudo
     append: yes
     password: $6$rounds=200000$lAM7EROUWhjCKz$snY7MJ4tV.6x8NE0BioxG2XAYAP/2ZWY7DbNJTVX5zdmchx8fKYPYdwdLbTe0ZEGdBhLkHtrBn3AUWyqzF.BK1
+    update_password: on_create
   loop: "{{ users }}"
