@@ -10,3 +10,15 @@
     - htop
     - ncdu
     - tree
+
+- name: Création du groupe steganodon
+  group:
+    name: steganodon
+
+- name: Répertoire partagé
+  file:
+    state: directory
+    path: /opt/steganodon
+    owner: root
+    group: steganodon
+    mode: g+w

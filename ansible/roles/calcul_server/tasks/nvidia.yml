@@ -32,8 +32,8 @@
     dest: "{{ item.dest }}"
     mode: a+r
   loop:
-    - {src: "/tmp/cuda/include/cudnn.h", dest: "/usr/lib/cuda/include/"}
-    - {src: "cuda/lib64/libcudnn*", dest: "/usr/lib/cuda/lib64/"}
+    - { src: "/tmp/cuda/include/cudnn.h", dest: "/usr/lib/cuda/include/" }
+    - { src: "cuda/lib64/libcudnn*", dest: "/usr/lib/cuda/lib64/" }
 
 - name: Export des librairies dans la variable d'environnement $LD_LIBRARY_PATH
   blockinfile:
