@@ -5,5 +5,5 @@ users:
 
 pubkeys:
   amorix:
-  processor:
+  processor: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGULdfuVjnhDmjfl+IwKhTJeqVKe/rGTPl8oi0c7bSC jean@jean-pc
   natsec: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0OayAcZ0cRSWNHcVra4kY1Nh8VTnXrloQS7nJwDAIR serveur calcul projet2A
