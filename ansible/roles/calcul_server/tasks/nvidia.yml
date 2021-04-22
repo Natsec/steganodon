@@ -1,45 +1,24 @@
 # https://towardsdatascience.com/set-up-of-a-personal-gpu-server-for-machine-learning-with-ubuntu-20-04-100e787105ad
+# https://linoxide.com/how-to-install-nvidia-driver-on-ubuntu/
 
 - name: Installation de l'utilitaire des drivers propriétaires de Ubuntu
   package:
-    name: ubuntu-drivers-common
+    name: "{{ item }}"
     state: latest
-
-- name: Affichage des drivers propriétaires recommendés
-  command: ubuntu-drivers devices
-  register: output
-- debug:
-    var: output.stdout_lines
-
-- name: Installation des drivers propriétaires recommandés
-  command: ubuntu-drivers install
-
-- name: Installation de CUDA
-  package:
-    name: nvidia-cuda-toolkit
-    state: latest
-
-- name: Affichage de la version de CUDA
-  command: nvcc --version
-  register: output
-- debug:
-    var: output.stdout_lines
-
-- name: Copie des fichiers cuDNN
-  copy:
-    remote_src: yes
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: a+r
   loop:
-    - { src: "/tmp/cuda/include/cudnn.h", dest: "/usr/lib/cuda/include/" }
-    - { src: "cuda/lib64/libcudnn*", dest: "/usr/lib/cuda/lib64/" }
+    - hwinfo
+    - ubuntu-drivers-common
+    - nvidia-cuda-toolkit
+
+- name: Copie du programme à compiler pour valider CUDA
+  copy:
+    src: hello.cu
+    dest: /tmp/hello.cu
 
 - name: Export des librairies dans la variable d'environnement $LD_LIBRARY_PATH
   blockinfile:
-    # equivalent d'un bashrc pour tous les utilisateurs
-    path: /etc/profile.d/cudnn.sh
-    mode: 0644
+    # bashrc pour tous les utilisateurs
+    path: /etc/bash.bashrc
     block: |
-      echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/lib64:$LD_LIBRARY_PATH'
-      echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/include:$LD_LIBRARY_PATH'
+      export LD_LIBRARY_PATH=/usr/lib/cuda/include:$LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH=/usr/lib/cuda/lib64:$LD_LIBRARY_PATH

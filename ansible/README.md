@@ -1,18 +1,23 @@
 - [Installation du serveur](#installation-du-serveur)
 - [Configuration avec Ansible](#configuration-avec-ansible)
-  - [Authentification par clé SSH](#authentification-par-clé-ssh)
-- [Matrice de flux du pare-feu du réseau](#matrice-de-flux-du-pare-feu-du-réseau)
-- [NVIDIA](#nvidia)
+- [Authentification par clé SSH](#authentification-par-clé-ssh)
+- [Installation des drivers NVIDIA](#installation-des-drivers-nvidia)
 
 # Configuration du serveur de calcul
-
->https://towardsdatascience.com/set-up-of-a-personal-gpu-server-for-machine-learning-with-ubuntu-20-04-100e787105ad
 
 ## Installation du serveur
 
 Installer `Ubuntu Server 20 LTS` avec les options suivantes :
 - Cocher l'installation d'un serveur SSH
 - Compte utilisateur `user:user`
+
+Matrice de flux du pare-feu du réseau :
+
+| De / Vers |   Machine   |  VPN  |      Internet      |
+| :-------: | :---------: | :---: | :----------------: |
+|  Machine  |      -      |       | DNS,HTTP,HTTPS,NTP |
+|    VPN    |     SSH     |   -   |                    |
+| Internet  | Wake On Lan |       |         -          |
 
 ## Configuration avec Ansible
 
@@ -34,12 +39,7 @@ Lancer le playbook depuis la machine de contrôle :
 ansible-playbook playbook.yml
 ```
 
-On peut lancer des commandes à distances avec :
-```bash
-ansible ubuntu -a "ls"
-```
-
-### Authentification par clé SSH
+## Authentification par clé SSH
 
 Générer une paire de clé sur la machine cliente :
 ```bash
@@ -63,30 +63,43 @@ Host s serveur_de_calcul
 
 Quand la commande `ssh s` fonctionne, copier la clé publique dans le fichier `/roles/calcul_server/vars/main.yml`.
 
-## Matrice de flux du pare-feu du réseau
+## Installation des drivers NVIDIA
 
-| De / Vers |   Machine   |  VPN  |    Internet    |
-| :-------: | :---------: | :---: | :------------: |
-|  Machine  |      -      |       | DNS,HTTP,HTTPS |
-|    VPN    |     SSH     |   -   |                |
-| Internet  | Wake On Lan |       |       -        |
+Pour que le serveur utilise la carte NVIDIA pour faire ses calculs, les étapes sont :
+1. installation des drivers de la carte graphique
+2. installation de CUDA pour compiler des programmes pur GPU
+3. installation de la librairie cuDNN qui facilite les calculs de réseau de neurone
 
-## NVIDIA
-
-Pour afficher la version des drivers NVIDIA :
+Installation des drivers :
 ```bash
-nvidia-smi
+# afficher le matériel graphique
+sudo apt install hwinfo
+hwinfo --gfxcard --short
+# afficher les drivers recommandés
+sudo apt install ubuntu-drivers-common
+sudo ubuntu-drivers devices
+# installer les drivers recommandés
+sudo ubuntu-drivers install
+# redémarrer le serveur
+sudo reboot
+# afficher la version des drivers NVIDIA
+sudo nvidia-smi
 ```
 
-Pour tester que CUDA fonctionne :
+Installation de CUDA :
 ```bash
-cd roles/ai_server/files
-nvcc -o test test.cu && ./test
-# ‘Max error: 0.000000’ means your CUDA libraries are working as expected!
-```
-
-Pour afficher la version de CUDA :
-```bash
+sudo apt install nvidia-cuda-toolkit
+# afficher la version de CUDA et la noter (ex: 10.1)
 nvcc --version
+# compiler le fichier hello.cu pour tester le bon fonctionnement
+cd /tmp; nvcc -o hello hello.cu && ./hello # si Max error: 0.000000, c'est bon
 ```
-Télécharger la version de cuDNN qui correspond à la version de CUDA sur https://developer.nvidia.com/rdp/cudnn-download.
+
+Installation de cuDNN. Télécharger la version de cuDNN qui correspond à la version de CUDA sur https://developer.nvidia.com/rdp/cudnn-download.
+```bash
+# copier puis décomprésser l'archive
+cd /tmp; tar -xzvf cudnn-10.1-linux-x64-v8.0.5.39.tgz
+sudo cp /tmp/cuda/include/cudnn.h /usr/lib/cuda/include/
+sudo cp /tmp/cuda/lib64/libcudnn* /usr/lib/cuda/lib64/
+sudo chmod a+r /usr/lib/cuda/include/cudnn.h /usr/lib/cuda/lib64/libcudnn*
+```

@@ -1,4 +1,4 @@
-// CUDA 'Hello world' example from
+// CUDA 'Hello world' example from 
 // https://developer.nvidia.com/blog/easy-introduction-cuda-c-and-c/
 // by  Mark Harris | October 31, 2012
 
@@ -18,7 +18,7 @@ int main(void)
   x = (float*)malloc(N*sizeof(float));
   y = (float*)malloc(N*sizeof(float));
 
-  cudaMalloc(&d_x, N*sizeof(float));
+  cudaMalloc(&d_x, N*sizeof(float)); 
   cudaMalloc(&d_y, N*sizeof(float));
 
   for (int i = 0; i < N; i++) {

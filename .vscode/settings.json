@@ -2,7 +2,6 @@
     "[python]": {
         "editor.formatOnSave": true
     },
-    "editor.formatOnSave": true,
     "editor.renderLineHighlight": "all",
     "editor.renderWhitespace": "boundary",
     "editor.stickyTabStops": true,

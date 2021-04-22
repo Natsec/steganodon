@@ -1,6 +1,13 @@
 - name: Timezone
   shell: timedatectl set-timezone Europe/Paris
 
+- name: Date et heure
+  # avec la date de le machine de contrôle
+  shell: date {{ lookup('pipe','date +%m%d%H%M') }}
+
+- name: Désactivation de la mise en veille
+  shell: systemctl mask {sleep,suspend,hibernate,hybrid-sleep}.target
+
 - name: Installation des paquets
   package:
     name: "{{ item }}"
