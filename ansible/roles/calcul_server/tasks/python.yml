@@ -1,0 +1,42 @@
+# https://towardsdatascience.com/set-up-of-a-personal-gpu-server-for-machine-learning-with-ubuntu-20-04-100e787105ad
+
+- name: Installation des paquets
+  package:
+    name:
+      - python-setuptools
+      - python3-pip
+      - python3-dev
+    state: latest
+
+- name: Mise à jour de pip et installation de virtualenv
+  pip:
+    name:
+    - pip
+    - virtualenv
+    state: latest
+    executable: pip3
+
+- name: Création du répertoire contenant le virtualenv
+  file:
+    state: directory
+    path: /opt/steganodon/gpu_ml
+    owner: root
+    group: steganodon
+    mode: g+w
+
+- name: Création du virtualenv, puis installation des modules dans le virtualenv
+  pip:
+    name:
+      - tensorflow
+      - tensorflow-gpu
+    state: latest
+    virtualenv: /opt/steganodon/gpu_ml/gpu_ml_env
+
+- name: Activation du virtualenv à la connexion
+  blockinfile:
+    create: yes
+    path: /home/{{ item }}/.bash_aliases
+    block: |
+      source /opt/steganodon/gpu_ml/gpu_ml_env/bin/activate
+      cd /opt/steganodon
+  loop: "{{ users }}"

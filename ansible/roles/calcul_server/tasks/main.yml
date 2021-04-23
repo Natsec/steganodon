@@ -1,5 +1,5 @@
-- include_tasks: 1_base.yml
-- include_tasks: 2_users.yml
-- include_tasks: 3_ssh.yml
-- include_tasks: nvidia.yml
-# - include_tasks: python.yml
+# - include_tasks: 1_base.yml
+# - include_tasks: 2_users.yml
+# - include_tasks: 3_ssh.yml
+# - include_tasks: nvidia.yml
+- include_tasks: python.yml

@@ -1,7 +1,7 @@
 # https://towardsdatascience.com/set-up-of-a-personal-gpu-server-for-machine-learning-with-ubuntu-20-04-100e787105ad
 # https://linoxide.com/how-to-install-nvidia-driver-on-ubuntu/
 
-- name: Installation de l'utilitaire des drivers propriétaires de Ubuntu
+- name: Installation des paquets
   package:
     name: "{{ item }}"
     state: latest
