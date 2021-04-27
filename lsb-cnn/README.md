@@ -16,11 +16,6 @@ It makes the following tasks :
 
 ## Prerequisite
 
-The following modules are required for the program to work correctly:
-```bash
-pip install tensorflow
-```
-
 The arborescence of the `dataset` directory must be as follows :
 ```shell
 dataset/
@@ -59,3 +54,8 @@ To generate the documentation with pdoc :
 ```shell
 pdoc --html .\lsb-cnn.py --output-dir doc --force
 ```
+
+## Notes de test
+
+Lancement de first_neural_network.py
+sur laptop (cpu) :
