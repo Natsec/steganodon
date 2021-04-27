@@ -58,4 +58,5 @@ pdoc --html .\lsb-cnn.py --output-dir doc --force
 ## Notes de test
 
 Lancement de first_neural_network.py
-sur laptop (cpu) :
+sur laptop (cpu) : 25s
+sur serveur (cpu) : 38s
