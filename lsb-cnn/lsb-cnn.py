@@ -100,7 +100,7 @@ def main():
     # Chargement du dataset
     # ----------------------------------------
 
-    train_images, test_images, labels = load_dataset("dataset", (180, 180))
+    train_images, test_images, labels = load_dataset("/opt/dataset", (180, 180))
 
     # ----------------------------------------
     # Création du modèle

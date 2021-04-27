@@ -15,7 +15,8 @@ from tensorflow import keras
 
 # Helper libraries
 import numpy as np
-import matplotlib.pyplot as plt
+
+# import matplotlib.pyplot as plt
 
 print("\nTensorflow version : {}".format(tf.__version__))
 print("Built with CUDA : {}\n".format((tf.test.is_built_with_cuda())))
@@ -126,12 +127,12 @@ print(
 )
 
 # afficher la prediction
-plt.figure()
-plt.imshow(train_images[i])
-plt.colorbar()
+# plt.figure()
+# plt.imshow(train_images[i])
+# plt.colorbar()
 # plt.show()
 
-fig = plt.figure()
-ax = fig.add_axes([0, 0, 1, 1])
-plt.bar(class_names, predictions[i])
-plt.show()
+# fig = plt.figure()
+# ax = fig.add_axes([0, 0, 1, 1])
+# plt.bar(class_names, predictions[i])
+# plt.show()

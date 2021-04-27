@@ -10,5 +10,6 @@
     "files.trimTrailingWhitespace": true,
     "git.autofetch": true,
     "python.formatting.provider": "black",
-    "python.linting.enabled": false
+    "python.linting.enabled": false,
+    "python.pythonPath": "/usr/bin/python3"
 }

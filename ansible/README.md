@@ -103,3 +103,7 @@ sudo cp /tmp/cuda/include/cudnn.h /usr/lib/cuda/include/
 sudo cp /tmp/cuda/lib64/libcudnn* /usr/lib/cuda/lib64/
 sudo chmod a+r /usr/lib/cuda/include/cudnn.h /usr/lib/cuda/lib64/libcudnn*
 ```
+
+## Environnement virtuel python
+
+Pour sortir de l'environnement virtuel python, faire `deactivate`.
