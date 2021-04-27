@@ -16,27 +16,19 @@
     state: latest
     executable: pip3
 
-- name: Création du répertoire contenant le virtualenv
-  file:
-    state: directory
-    path: /opt/steganodon/gpu_ml
-    owner: root
-    group: steganodon
-    mode: g+w
-
 - name: Création du virtualenv, puis installation des modules dans le virtualenv
   pip:
     name:
       - tensorflow
       - tensorflow-gpu
     state: latest
-    virtualenv: /opt/steganodon/gpu_ml/gpu_ml_env
+    virtualenv: /opt/gpu_virtualenv
 
 - name: Activation du virtualenv à la connexion
   blockinfile:
     create: yes
     path: /home/{{ item }}/.bash_aliases
     block: |
-      source /opt/steganodon/gpu_ml/gpu_ml_env/bin/activate
-      cd /opt/steganodon
+      source /opt/gpu_virtualenv/bin/activate
+      cd /opt
   loop: "{{ users }}"
