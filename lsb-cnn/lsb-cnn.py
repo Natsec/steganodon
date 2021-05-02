@@ -72,7 +72,7 @@ def load_dataset(data_dir, img_size):
         validation_split=0.2,
         subset="validation",
         seed=123,
-        image_size=(img_height, img_width),
+        image_size=(500, 500),
         batch_size=batch_size,
     )
     """obj: Pictures used for validation of the model."""
@@ -109,25 +109,22 @@ def main():
     model = tf.keras.Sequential(
         [
             # normalisation des données (d'un intervalle [0;255] à [0;1])
-            layers.experimental.preprocessing.Rescaling(1.0 / 255),
+            keras.layers.experimental.preprocessing.Rescaling(1.0 / 255),
             # convolutions
-            layers.Conv2D(32, 3, activation="relu"),
-            layers.MaxPooling2D(),
-            layers.Conv2D(32, 3, activation="relu"),
-            layers.MaxPooling2D(),
-            layers.Conv2D(32, 3, activation="relu"),
-            layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation="relu"),
+            keras.layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation="relu"),
+            keras.layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation="relu"),
+            keras.layers.MaxPooling2D(),
             # couches denses
-            layers.Flatten(),
-            layers.Dense(128, activation="relu"),
+            keras.layers.Flatten(),
+            keras.layers.Dense(128, activation="relu"),
             # classification dans 2 classes (stego/clean)
-            layers.Dense(2),
+            keras.layers.Dense(2),
         ]
     )
     """obj: Convolutional Neural Network model."""
-
-    # affichage du résumé du modèle
-    model.summary()
 
     # compilation du modèle
     model.compile(
@@ -183,6 +180,9 @@ def main():
         validation_data=(test_images, labels),
         callbacks=[cp_callback, tensorboard_callback],
     )
+
+    # affichage du résumé du modèle
+    model.summary()
 
     # ----------------------------------------
     # Enregistrement du modèle

@@ -67,7 +67,7 @@ Quand la commande `ssh s` fonctionne, copier la clé publique dans le fichier `/
 
 Pour que le serveur utilise la carte NVIDIA pour faire ses calculs, les étapes sont :
 1. installation des drivers de la carte graphique
-2. installation de CUDA pour compiler des programmes pur GPU
+2. installation de CUDA pour compiler des programmes pour GPU
 3. installation de la librairie cuDNN qui facilite les calculs de réseau de neurone
 
 Installation des drivers :
@@ -92,7 +92,7 @@ sudo apt install nvidia-cuda-toolkit
 # afficher la version de CUDA et la noter (ex: 10.1)
 nvcc --version
 # compiler le fichier hello.cu pour tester le bon fonctionnement
-cd /tmp; nvcc -o hello hello.cu && ./hello # si Max error: 0.000000, c'est bon
+cd /tmp; nvcc -o hello hello.cu && ./hello # si affiche Max error: 0.000000, c'est bon
 ```
 
 Installation de cuDNN. Télécharger la version de cuDNN qui correspond à la version de CUDA sur https://developer.nvidia.com/rdp/cudnn-download.

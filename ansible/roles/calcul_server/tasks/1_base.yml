@@ -17,6 +17,7 @@
     - htop
     - ncdu
     - tree
+    - exiftool
 
 - name: Création du groupe steganodon
   group:

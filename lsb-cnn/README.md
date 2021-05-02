@@ -59,4 +59,11 @@ pdoc --html .\lsb-cnn.py --output-dir doc --force
 
 Lancement de first_neural_network.py
 sur laptop (cpu) : 25s
-sur serveur (cpu) : 38s
+sur serveur (cpu) : 36s
+
+## dataset
+
+Pour voir les tailles d'image :
+```bash
+time ls -1 /opt/dataset/cover-images/ | xargs -L1 -I% exiftool /opt/dataset/cover-images/% -ImageSize | sort | uniq
+```
