@@ -11,6 +11,7 @@ from tensorflow import keras
 import numpy as np
 import os
 import pathlib
+import datetime
 import tensorflow as tf
 
 # import tensorflow_datasets as tfds
@@ -72,7 +73,7 @@ def load_dataset(data_dir, img_size):
         validation_split=0.2,
         subset="validation",
         seed=123,
-        image_size=(500, 500),
+        image_size=img_size,
         batch_size=batch_size,
     )
     """obj: Pictures used for validation of the model."""
@@ -100,12 +101,15 @@ def main():
     # Chargement du dataset
     # ----------------------------------------
 
-    train_images, test_images, labels = load_dataset("/opt/dataset", (180, 180))
+    dataset_path = "/opt/dataset"
+    print(f"chargement du dataset {dataset_path}")
+    train_images, test_images, labels = load_dataset(dataset_path, (180, 180))
 
     # ----------------------------------------
     # Création du modèle
     # ----------------------------------------
 
+    print("Création du modèle")
     model = tf.keras.Sequential(
         [
             # normalisation des données (d'un intervalle [0;255] à [0;1])
@@ -127,6 +131,7 @@ def main():
     """obj: Convolutional Neural Network model."""
 
     # compilation du modèle
+    print("Compilation du modèle")
     model.compile(
         optimizer="adam",
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -141,15 +146,17 @@ def main():
     """str: Relatif path of the directory containing the checkpoints."""
 
     # TODO : si un checkpoint existe on le charge
-    if "checkpoint exist":
+    if not "checkpoint exist":
+        print("Chargement du checkpoint")
         new_model.load_weights(checkpoint_path)
     # sinon on le configure
     else:
+        print("Préparation du checkpoint")
         checkpoint_dir = os.path.dirname(checkpoint_path)
         """str: Full path of the directory containing the checkpoints."""
 
         # création d'un callback qui enregistrera les poids du modèle
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(
+        checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_path, save_weights_only=True, verbose=1
         )
         """obj: Function that will be called to save the training state of the model after each epoch."""
@@ -162,6 +169,7 @@ def main():
     # ----------------------------------------
 
     # création d'un callback qui enregistrera les log pour tensorboard
+    print("Préparation de tensorboard")
     log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     """str: Relative path of the directory containing training logs used by TensorBoard."""
     tensorboard_callback = tf.keras.callbacks.TensorBoard(
@@ -172,16 +180,18 @@ def main():
     # ----------------------------------------
     # Entraînement du modèle
     # ----------------------------------------
-
+    print(type(train_images))
+    print("Entraînement du modèle")
     model.fit(
         train_images,
         labels,
         epochs=10,
         validation_data=(test_images, labels),
-        callbacks=[cp_callback, tensorboard_callback],
+        callbacks=[checkpoint_callback, tensorboard_callback],
     )
 
     # affichage du résumé du modèle
+    print("Résumé du modèle")
     model.summary()
 
     # ----------------------------------------
@@ -189,6 +199,7 @@ def main():
     # ----------------------------------------
 
     # Enregistre le modèle entier, permet l'import dans tensorflow.js
+    print("Enregistrement du modèle")
     new_model.save("saved_model/lsb-cnn")
 
 
