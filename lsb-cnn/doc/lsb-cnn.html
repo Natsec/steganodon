@@ -24,13 +24,6 @@
 <section id="section-intro">
 <p>Training of a CNN model for LSB steganography detection.</p>
 <p>This python program trains a Convolutional Neural Network model to detect the use of Least Significant Bit steganography in a picture.</p>
-<p>It makes the following tasks :
-- loads images from a directory
-- creates a CNN model
-- trains the CNN model (or resumes it's training if checkpoints already exists)
-- saves checkpoint during training
-- saves the whole model at the end of the training
-- records training data for TensorBoard</p>
 <p>author : Kamil Mohoboob, Jean Jestin-Scanvion, Amaury Bonnaud</p>
 <p>date : 03/03/2021</p>
 <details class="source">
@@ -41,14 +34,6 @@
 
 This python program trains a Convolutional Neural Network model to detect the use of Least Significant Bit steganography in a picture.
 
-It makes the following tasks :
-    - loads images from a directory
-    - creates a CNN model
-    - trains the CNN model (or resumes it&#39;s training if checkpoints already exists)
-    - saves checkpoint during training
-    - saves the whole model at the end of the training
-    - records training data for TensorBoard
-
 author : Kamil Mohoboob, Jean Jestin-Scanvion, Amaury Bonnaud
 
 date : 03/03/2021
@@ -58,6 +43,7 @@ from tensorflow import keras
 import numpy as np
 import os
 import pathlib
+import datetime
 import tensorflow as tf
 
 # import tensorflow_datasets as tfds
@@ -119,7 +105,7 @@ def load_dataset(data_dir, img_size):
         validation_split=0.2,
         subset=&#34;validation&#34;,
         seed=123,
-        image_size=(img_height, img_width),
+        image_size=img_size,
         batch_size=batch_size,
     )
     &#34;&#34;&#34;obj: Pictures used for validation of the model.&#34;&#34;&#34;
@@ -147,36 +133,37 @@ def main():
     # Chargement du dataset
     # ----------------------------------------
 
-    train_images, test_images, labels = load_dataset(&#34;dataset&#34;, (180, 180))
+    dataset_path = &#34;/opt/dataset&#34;
+    print(f&#34;chargement du dataset {dataset_path}&#34;)
+    train_images, test_images, labels = load_dataset(dataset_path, (180, 180))
 
     # ----------------------------------------
     # Création du modèle
     # ----------------------------------------
 
+    print(&#34;Création du modèle&#34;)
     model = tf.keras.Sequential(
         [
             # normalisation des données (d&#39;un intervalle [0;255] à [0;1])
-            layers.experimental.preprocessing.Rescaling(1.0 / 255),
+            keras.layers.experimental.preprocessing.Rescaling(1.0 / 255),
             # convolutions
-            layers.Conv2D(32, 3, activation=&#34;relu&#34;),
-            layers.MaxPooling2D(),
-            layers.Conv2D(32, 3, activation=&#34;relu&#34;),
-            layers.MaxPooling2D(),
-            layers.Conv2D(32, 3, activation=&#34;relu&#34;),
-            layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation=&#34;relu&#34;),
+            keras.layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation=&#34;relu&#34;),
+            keras.layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation=&#34;relu&#34;),
+            keras.layers.MaxPooling2D(),
             # couches denses
-            layers.Flatten(),
-            layers.Dense(128, activation=&#34;relu&#34;),
+            keras.layers.Flatten(),
+            keras.layers.Dense(128, activation=&#34;relu&#34;),
             # classification dans 2 classes (stego/clean)
-            layers.Dense(2),
+            keras.layers.Dense(2),
         ]
     )
     &#34;&#34;&#34;obj: Convolutional Neural Network model.&#34;&#34;&#34;
 
-    # affichage du résumé du modèle
-    model.summary()
-
     # compilation du modèle
+    print(&#34;Compilation du modèle&#34;)
     model.compile(
         optimizer=&#34;adam&#34;,
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -191,15 +178,17 @@ def main():
     &#34;&#34;&#34;str: Relatif path of the directory containing the checkpoints.&#34;&#34;&#34;
 
     # TODO : si un checkpoint existe on le charge
-    if &#34;checkpoint exist&#34;:
+    if not &#34;checkpoint exist&#34;:
+        print(&#34;Chargement du checkpoint&#34;)
         new_model.load_weights(checkpoint_path)
     # sinon on le configure
     else:
+        print(&#34;Préparation du checkpoint&#34;)
         checkpoint_dir = os.path.dirname(checkpoint_path)
         &#34;&#34;&#34;str: Full path of the directory containing the checkpoints.&#34;&#34;&#34;
 
         # création d&#39;un callback qui enregistrera les poids du modèle
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(
+        checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_path, save_weights_only=True, verbose=1
         )
         &#34;&#34;&#34;obj: Function that will be called to save the training state of the model after each epoch.&#34;&#34;&#34;
@@ -212,6 +201,7 @@ def main():
     # ----------------------------------------
 
     # création d&#39;un callback qui enregistrera les log pour tensorboard
+    print(&#34;Préparation de tensorboard&#34;)
     log_dir = &#34;logs/fit/&#34; + datetime.datetime.now().strftime(&#34;%Y%m%d-%H%M%S&#34;)
     &#34;&#34;&#34;str: Relative path of the directory containing training logs used by TensorBoard.&#34;&#34;&#34;
     tensorboard_callback = tf.keras.callbacks.TensorBoard(
@@ -222,20 +212,26 @@ def main():
     # ----------------------------------------
     # Entraînement du modèle
     # ----------------------------------------
-
+    print(type(train_images))
+    print(&#34;Entraînement du modèle&#34;)
     model.fit(
         train_images,
         labels,
         epochs=10,
         validation_data=(test_images, labels),
-        callbacks=[cp_callback, tensorboard_callback],
+        callbacks=[checkpoint_callback, tensorboard_callback],
     )
+
+    # affichage du résumé du modèle
+    print(&#34;Résumé du modèle&#34;)
+    model.summary()
 
     # ----------------------------------------
     # Enregistrement du modèle
     # ----------------------------------------
 
     # Enregistre le modèle entier, permet l&#39;import dans tensorflow.js
+    print(&#34;Enregistrement du modèle&#34;)
     new_model.save(&#34;saved_model/lsb-cnn&#34;)
 
 
@@ -313,7 +309,7 @@ class_names (list): Labels of the pictures.</p></div>
         validation_split=0.2,
         subset=&#34;validation&#34;,
         seed=123,
-        image_size=(img_height, img_width),
+        image_size=img_size,
         batch_size=batch_size,
     )
     &#34;&#34;&#34;obj: Pictures used for validation of the model.&#34;&#34;&#34;
@@ -350,36 +346,37 @@ class_names (list): Labels of the pictures.</p></div>
     # Chargement du dataset
     # ----------------------------------------
 
-    train_images, test_images, labels = load_dataset(&#34;dataset&#34;, (180, 180))
+    dataset_path = &#34;/opt/dataset&#34;
+    print(f&#34;chargement du dataset {dataset_path}&#34;)
+    train_images, test_images, labels = load_dataset(dataset_path, (180, 180))
 
     # ----------------------------------------
     # Création du modèle
     # ----------------------------------------
 
+    print(&#34;Création du modèle&#34;)
     model = tf.keras.Sequential(
         [
             # normalisation des données (d&#39;un intervalle [0;255] à [0;1])
-            layers.experimental.preprocessing.Rescaling(1.0 / 255),
+            keras.layers.experimental.preprocessing.Rescaling(1.0 / 255),
             # convolutions
-            layers.Conv2D(32, 3, activation=&#34;relu&#34;),
-            layers.MaxPooling2D(),
-            layers.Conv2D(32, 3, activation=&#34;relu&#34;),
-            layers.MaxPooling2D(),
-            layers.Conv2D(32, 3, activation=&#34;relu&#34;),
-            layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation=&#34;relu&#34;),
+            keras.layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation=&#34;relu&#34;),
+            keras.layers.MaxPooling2D(),
+            keras.layers.Conv2D(32, 3, activation=&#34;relu&#34;),
+            keras.layers.MaxPooling2D(),
             # couches denses
-            layers.Flatten(),
-            layers.Dense(128, activation=&#34;relu&#34;),
+            keras.layers.Flatten(),
+            keras.layers.Dense(128, activation=&#34;relu&#34;),
             # classification dans 2 classes (stego/clean)
-            layers.Dense(2),
+            keras.layers.Dense(2),
         ]
     )
     &#34;&#34;&#34;obj: Convolutional Neural Network model.&#34;&#34;&#34;
 
-    # affichage du résumé du modèle
-    model.summary()
-
     # compilation du modèle
+    print(&#34;Compilation du modèle&#34;)
     model.compile(
         optimizer=&#34;adam&#34;,
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -394,15 +391,17 @@ class_names (list): Labels of the pictures.</p></div>
     &#34;&#34;&#34;str: Relatif path of the directory containing the checkpoints.&#34;&#34;&#34;
 
     # TODO : si un checkpoint existe on le charge
-    if &#34;checkpoint exist&#34;:
+    if not &#34;checkpoint exist&#34;:
+        print(&#34;Chargement du checkpoint&#34;)
         new_model.load_weights(checkpoint_path)
     # sinon on le configure
     else:
+        print(&#34;Préparation du checkpoint&#34;)
         checkpoint_dir = os.path.dirname(checkpoint_path)
         &#34;&#34;&#34;str: Full path of the directory containing the checkpoints.&#34;&#34;&#34;
 
         # création d&#39;un callback qui enregistrera les poids du modèle
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(
+        checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_path, save_weights_only=True, verbose=1
         )
         &#34;&#34;&#34;obj: Function that will be called to save the training state of the model after each epoch.&#34;&#34;&#34;
@@ -415,6 +414,7 @@ class_names (list): Labels of the pictures.</p></div>
     # ----------------------------------------
 
     # création d&#39;un callback qui enregistrera les log pour tensorboard
+    print(&#34;Préparation de tensorboard&#34;)
     log_dir = &#34;logs/fit/&#34; + datetime.datetime.now().strftime(&#34;%Y%m%d-%H%M%S&#34;)
     &#34;&#34;&#34;str: Relative path of the directory containing training logs used by TensorBoard.&#34;&#34;&#34;
     tensorboard_callback = tf.keras.callbacks.TensorBoard(
@@ -425,20 +425,26 @@ class_names (list): Labels of the pictures.</p></div>
     # ----------------------------------------
     # Entraînement du modèle
     # ----------------------------------------
-
+    print(type(train_images))
+    print(&#34;Entraînement du modèle&#34;)
     model.fit(
         train_images,
         labels,
         epochs=10,
         validation_data=(test_images, labels),
-        callbacks=[cp_callback, tensorboard_callback],
+        callbacks=[checkpoint_callback, tensorboard_callback],
     )
+
+    # affichage du résumé du modèle
+    print(&#34;Résumé du modèle&#34;)
+    model.summary()
 
     # ----------------------------------------
     # Enregistrement du modèle
     # ----------------------------------------
 
     # Enregistre le modèle entier, permet l&#39;import dans tensorflow.js
+    print(&#34;Enregistrement du modèle&#34;)
     new_model.save(&#34;saved_model/lsb-cnn&#34;)</code></pre>
 </details>
 </dd>
