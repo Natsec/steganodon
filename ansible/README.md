@@ -2,6 +2,7 @@
 - [Configuration avec Ansible](#configuration-avec-ansible)
 - [Authentification par clé SSH](#authentification-par-clé-ssh)
 - [Installation des drivers NVIDIA](#installation-des-drivers-nvidia)
+- [Environnement virtuel python](#environnement-virtuel-python)
 
 # Configuration du serveur de calcul
 
@@ -13,11 +14,11 @@ Installer `Ubuntu Server 20 LTS` avec les options suivantes :
 
 Matrice de flux du pare-feu du réseau :
 
-| De / Vers |   Machine   |  VPN  |      Internet      |
-| :-------: | :---------: | :---: | :----------------: |
-|  Machine  |      -      |       | DNS,HTTP,HTTPS,NTP |
-|    VPN    |     SSH     |   -   |                    |
-| Internet  | Wake On Lan |       |         -          |
+| De / Vers |     Machine      |  VPN  |      Internet      |
+| :-------: | :--------------: | :---: | :----------------: |
+|  Machine  |        -         |       | DNS,HTTP,HTTPS,NTP |
+|    VPN    | SSH, HTTP, HTTPS |   -   |                    |
+| Internet  |   Wake On Lan    |       |         -          |
 
 ## Configuration avec Ansible
 
