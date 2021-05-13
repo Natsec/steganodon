@@ -48,9 +48,10 @@ def load_dataset(data_dir, img_size):
 
     data_dir = pathlib.Path(data_dir)
     """str: Relative path of the directory containing the dataset."""
+    print(f"data_dir : {data_dir}")
 
     # compter le dataset
-    image_count = len(list(data_dir.glob("*/*.jpg")))
+    image_count = len(list(data_dir.glob("*/*.png")))
     """int: Number of pictures in the dataset."""
     print(f"Le dataset contient {image_count} images.")
 
@@ -59,7 +60,7 @@ def load_dataset(data_dir, img_size):
     # charger le dataset en mémoire (images d'entraînement)
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
         data_dir,
-        validation_split=0.2,
+        validation_split=0.8,
         subset="training",
         seed=123,
         image_size=img_size,
@@ -78,7 +79,7 @@ def load_dataset(data_dir, img_size):
     )
     """obj: Pictures used for validation of the model."""
 
-    # afficher les labels
+    # afficher les class_names
     class_names = train_ds.class_names
     """list: Class name of the pictures."""
     print(f"Labels : {class_names}")
@@ -103,7 +104,7 @@ def main():
 
     dataset_path = "/opt/dataset"
     print(f"chargement du dataset {dataset_path}")
-    train_images, test_images, labels = load_dataset(dataset_path, (180, 180))
+    train_ds, val_ds, class_names = load_dataset(dataset_path, (512, 512))
 
     # ----------------------------------------
     # Création du modèle
@@ -180,13 +181,13 @@ def main():
     # ----------------------------------------
     # Entraînement du modèle
     # ----------------------------------------
-    print(type(train_images))
+    print(type(train_ds))
     print("Entraînement du modèle")
     model.fit(
-        train_images,
-        labels,
+        train_ds,
+        class_names,
         epochs=10,
-        validation_data=(test_images, labels),
+        validation_data=(val_ds, class_names),
         callbacks=[checkpoint_callback, tensorboard_callback],
     )
 
