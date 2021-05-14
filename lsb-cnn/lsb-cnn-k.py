@@ -31,6 +31,7 @@ def print(*args):
     builtins.print("\033[0m", end="")
 
 
+# https://www.tensorflow.org/tutorials/load_data/images
 def load_dataset(data_dir, img_size):
     """Loads the dataset in memory.
 
@@ -60,7 +61,7 @@ def load_dataset(data_dir, img_size):
     # charger le dataset en mémoire (images d'entraînement)
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
         data_dir,
-        validation_split=0.8,
+        validation_split=0.2,
         subset="training",
         seed=123,
         image_size=img_size,
@@ -120,8 +121,6 @@ def main():
             keras.layers.MaxPooling2D(),
             keras.layers.Conv2D(32, 3, activation="relu"),
             keras.layers.MaxPooling2D(),
-            keras.layers.Conv2D(32, 3, activation="relu"),
-            keras.layers.MaxPooling2D(),
             # couches denses
             keras.layers.Flatten(),
             keras.layers.Dense(128, activation="relu"),
@@ -171,7 +170,7 @@ def main():
 
     # création d'un callback qui enregistrera les log pour tensorboard
     print("Préparation de tensorboard")
-    log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M")
     """str: Relative path of the directory containing training logs used by TensorBoard."""
     tensorboard_callback = tf.keras.callbacks.TensorBoard(
         log_dir=log_dir, histogram_freq=1
@@ -185,9 +184,8 @@ def main():
     print("Entraînement du modèle")
     model.fit(
         train_ds,
-        class_names,
+        validation_data=val_ds,
         epochs=10,
-        validation_data=(val_ds, class_names),
         callbacks=[checkpoint_callback, tensorboard_callback],
     )
 
@@ -201,7 +199,7 @@ def main():
 
     # Enregistre le modèle entier, permet l'import dans tensorflow.js
     print("Enregistrement du modèle")
-    new_model.save("saved_model/lsb-cnn")
+    model.save("saved_model/lsb-cnn")
 
 
 if __name__ == "__main__":
