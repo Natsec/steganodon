@@ -3,6 +3,8 @@
 Pour lancer tensorboard en local :
 ```shell
 tensorboard --logdir ./logs/ --port 80
+# OU
+sudo /opt/gpu_virtualenv/bin/tensorboard --logdir ./logs/ --port 443 --bind_all
 ```
 
 Pour upload sur https://tensorboard.dev :

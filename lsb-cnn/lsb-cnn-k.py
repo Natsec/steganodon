@@ -117,13 +117,13 @@ def main():
             # normalisation des données (d'un intervalle [0;255] à [0;1])
             keras.layers.experimental.preprocessing.Rescaling(1.0 / 255),
             # convolutions
-            keras.layers.Conv2D(32, 3, activation="relu"),
+            keras.layers.Conv2D(filters=3, kernel_size=8, strides=8, activation="relu"),
             keras.layers.MaxPooling2D(),
-            keras.layers.Conv2D(32, 3, activation="relu"),
+            keras.layers.Conv2D(filters=3, kernel_size=8, strides=8, activation="relu"),
             keras.layers.MaxPooling2D(),
             # couches denses
             keras.layers.Flatten(),
-            keras.layers.Dense(128, activation="relu"),
+            keras.layers.Dense(192, activation="relu"),
             # classification dans 2 classes (stego/clean)
             keras.layers.Dense(2),
         ]

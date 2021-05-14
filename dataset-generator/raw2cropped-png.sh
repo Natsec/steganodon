@@ -18,8 +18,8 @@ time for file in *.dng; do
     # https://infoheap.com/crop-image-using-imagemagick-convert/
     # keep original png, uncomment only for tests
     # cp $dst/${file}.png $dst/${file}_orig.png
-    X=$(identify -format '%[fx:w/4]' $dst/${file}.png)
-    Y=$(identify -format '%[fx:h/4]' $dst/${file}.png)
+    X=$(identify -format '%[fx:w/2]' $dst/${file}.png)
+    Y=$(identify -format '%[fx:h/2]' $dst/${file}.png)
     mogrify -crop 512x512+$X+$Y $dst/${file}.png
 
     nb=$((nb+1))
