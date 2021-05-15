@@ -102,7 +102,7 @@ def main():
     # Chargement du dataset
     # ----------------------------------------
 
-    dataset_path = "/opt/dataset"
+    dataset_path = "/opt/dataset-simple-1000"
     print(f"chargement du dataset {dataset_path}")
     train_ds, val_ds, class_names = load_dataset(dataset_path, (512, 512))
 
@@ -124,7 +124,7 @@ def main():
             keras.layers.Flatten(),
             keras.layers.Dense(192, activation="relu"),
             # classification dans 2 classes (stego/clean)
-            keras.layers.Dense(2),
+            keras.layers.Dense(len(class_names)),
         ]
     )
     """obj: Convolutional Neural Network model."""

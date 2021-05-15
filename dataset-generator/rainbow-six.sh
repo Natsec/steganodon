@@ -3,8 +3,8 @@
 # This script generate uniform pictures with a random color
 
 # Options
-dst="/opt/dataset-simple/cover-images"
-nb=10000
+dst="/opt/dataset-simple-1000/cover-images"
+nb=1000
 
 date=$(date)
 mkdir -p $dst
