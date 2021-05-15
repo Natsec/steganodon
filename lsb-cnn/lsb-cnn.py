@@ -49,7 +49,6 @@ def load_dataset(data_dir, img_size):
 
     data_dir = pathlib.Path(data_dir)
     """str: Relative path of the directory containing the dataset."""
-    print(f"data_dir : {data_dir}")
 
     # compter le dataset
     image_count = len(list(data_dir.glob("*/*.png")))
@@ -180,7 +179,7 @@ def main():
     # ----------------------------------------
     # Entraînement du modèle
     # ----------------------------------------
-    print(type(train_ds))
+
     print("Entraînement du modèle")
     model.fit(
         train_ds,
