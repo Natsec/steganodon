@@ -13,6 +13,8 @@ import os
 import pathlib
 import datetime
 import tensorflow as tf
+import tensorflowjs as tfjs
+import PIL
 
 # import tensorflow_datasets as tfds
 import builtins
@@ -102,9 +104,9 @@ def main():
     # Chargement du dataset
     # ----------------------------------------
 
-    dataset_path = "/opt/dataset-simple-1000"
+    dataset_path = "/opt/dataset/simple-blackwhite"
     print(f"chargement du dataset {dataset_path}")
-    train_ds, val_ds, class_names = load_dataset(dataset_path, (512, 512))
+    train_ds, val_ds, class_names = load_dataset(dataset_path, (256, 256))
 
     # ----------------------------------------
     # Création du modèle
@@ -114,15 +116,15 @@ def main():
     model = tf.keras.Sequential(
         [
             # normalisation des données (d'un intervalle [0;255] à [0;1])
-            keras.layers.experimental.preprocessing.Rescaling(1.0 / 255),
+            # keras.layers.experimental.preprocessing.Rescaling(1.0 / 255),
             # convolutions
-            keras.layers.Conv2D(filters=3, kernel_size=8, strides=8, activation="relu"),
-            keras.layers.MaxPooling2D(),
-            keras.layers.Conv2D(filters=3, kernel_size=8, strides=8, activation="relu"),
-            keras.layers.MaxPooling2D(),
+            keras.layers.Conv2D(filters=2, kernel_size=5, strides=8, activation="relu"),
+            # keras.layers.MaxPooling2D(pool_size=8),
+            keras.layers.Conv2D(filters=4, kernel_size=3, strides=8, activation="relu"),
+            # keras.layers.MaxPooling2D(pool_size=8),
             # couches denses
             keras.layers.Flatten(),
-            keras.layers.Dense(192, activation="relu"),
+            keras.layers.Dense(256, activation="relu"),
             # classification dans 2 classes (stego/clean)
             keras.layers.Dense(len(class_names)),
         ]
@@ -198,7 +200,28 @@ def main():
 
     # Enregistre le modèle entier, permet l'import dans tensorflow.js
     print("Enregistrement du modèle")
-    model.save("saved_model/lsb-cnn")
+    model.save("saved_model/lsb-cnn", overwrite=True)
+    tfjs.converters.save_keras_model(model, "saved_model/pls_work")
+
+    # ----------------------------------------
+    # Test prediction
+    # ----------------------------------------
+
+    # image_path = "/opt/dataset/simple-blackwhite/stego-images/lsb_0432.png"
+    # print(f"Loading image {image_path}")
+    # image = PIL.Image.open(image_path)
+    # # convert image to numpy array
+    # image = np.array(image)
+
+    # # creation d'une image noire
+    # image = np.tile(0, (256, 256, 3))
+    # # redimenssionement car il faut ajouter une dimension qui indique la taille d'un batch
+    # # pour passer de (256, 256, 3) à (1, 256, 256, 3)
+    # image = tf.expand_dims(image, axis=0)
+
+    # print(image.shape)
+    # estimation = model.predict(image, input)
+    # print(estimation)
 
 
 if __name__ == "__main__":

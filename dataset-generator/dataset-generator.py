@@ -13,17 +13,98 @@ import subprocess
 
 # ---------------------------------------
 
+
 def get_random_text():
     """Gets and returns a random text to be hidden with Steganography.
 
     Returns:
-    - **(str)**: A string that contains a random text comming from a local file.
+    - **(str)**: A string that contains a random secret text.
     """
 
-    with open("dico.txt") as dico:
-        return random.choice(dico.readlines()).strip()
+    words = [
+        "crayon",
+        "stylo",
+        "feutre",
+        "taille-crayon",
+        "pointe",
+        "mine",
+        "gomme",
+        "dessin",
+        "coloriage",
+        "rayure",
+        "peinture",
+        "pinceau",
+        "couleur",
+        "craie",
+        "papier",
+        "feuille",
+        "cahier",
+        "carnet",
+        "carton",
+        "ciseaux",
+        "découpage",
+        "pliage",
+        "pli",
+        "colle",
+        "affaire",
+        "boîte",
+        "casier",
+        "caisse",
+        "trousse",
+        "affiche",
+        "alphabet",
+        "appareil",
+        "caméscope",
+        "cassette",
+        "chanson",
+        "chiffre",
+        "contraire",
+        "différence",
+        "doigt",
+        "écran",
+        "écriture",
+        "film",
+        "fois",
+        "idée",
+        "instrument",
+        "intrus",
+        "lettre",
+        "liste",
+        "magnétoscope",
+        "main",
+        "micro",
+        "modèle",
+        "musique",
+        "nom",
+        "nombre",
+        "orchestre",
+        "ordinateur",
+        "photo",
+        "point",
+        "poster",
+        "pouce",
+        "prénom",
+        "question",
+        "radio",
+        "sens",
+        "tambour",
+        "télécommande",
+        "téléphone",
+        "télévision",
+        "trait",
+        "trompette",
+        "voix",
+        "xylophone",
+        "zéro",
+        "secret",
+        "hacking",
+    ]
+
+    return "SECRET: " + " ".join(random.choice(words) for i in range(10))
+
 
 # ---------------------------------------
+
 
 def set_text_file(temp_text_file, data_to_hide):
     """Creates a file and writes given text into it.
@@ -36,7 +117,9 @@ def set_text_file(temp_text_file, data_to_hide):
     with open(temp_text_file, "w") as file:
         file.write(data_to_hide)
 
+
 # ---------------------------------------
+
 
 def stego_lsb(cover_image, text_file, stego_image):
     """Steganographies a random text within a cover image to create a stego image.
@@ -48,11 +131,29 @@ def stego_lsb(cover_image, text_file, stego_image):
     """
 
     try:
-        subprocess.call(["stegolsb", "steglsb", "-h", "-i", cover_image, "-s", text_file, "-o", stego_image])
+        subprocess.call(
+            [
+                "stegolsb",
+                "steglsb",
+                "-h",
+                "-i",
+                cover_image,
+                "-s",
+                text_file,
+                "-o",
+                stego_image,
+                "-n",
+                "1",
+            ]
+        )
     except:
-        raise Exception("Steg LSB failed! Install the tool using [git clone https://github.com/ragibson/Steganography].\n")
+        raise Exception(
+            "Steg LSB failed! Install the tool using [git clone https://github.com/ragibson/Steganography].\n"
+        )
+
 
 # ---------------------------------------
+
 
 def main():
     """Runs the dataset generator program when executing the script from the command-line."""
@@ -78,7 +179,9 @@ def main():
             cover_image = "{}/{}".format(cover_images_dir, cover_image)
 
             if not os.path.isfile(cover_image):
-                raise Exception("[{}] was not found in cover imges directory!".format(cover_image))
+                raise Exception(
+                    "[{}] was not found in cover imges directory!".format(cover_image)
+                )
 
             # get a random string from file
             data_to_hide = get_random_text()
@@ -96,7 +199,8 @@ def main():
         if os.path.isfile(temp_text_file):
             os.remove(temp_text_file)
 
+
 # ---------------------------------------
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
